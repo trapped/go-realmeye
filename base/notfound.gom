@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+{{template "head"}}
+<body>
+  {{template "header"}}
+  <div class="container">
+    {{template "noscript"}}
+    <div class="row">
+      <div class="span12">
+        <div class="offset2 span8 well">
+          <h3>We&apos;re sorry, but this page doesn&apos;t exist.</h3>
+          {{if hasext .Location}}
+          {{else}}
+          <div>
+            Are you looking for the player named <a href="/player/{{split .Location "/" | last}}">{{split .Location "/" | last}}</a>?
+          </div>
+          <div>
+            Are you looking for the guild named <a href="/guild/{{split .Location "/" | last}}">{{split .Location "/" | last}}</a>?
+          </div>
+          {{end}}
+          <br>
+          Isn&apos;t it strange? You&apos;re on a page that doesn&apos;t exist. How can that be? This must be a black hole. Hope you don&apos;t get trapped here forever.
+        </div>
+      </div>
+      <div class="span2"></div>
+    </div>
+    <script type="text/javascript">
+      $(function() {
+        initializeSearch("i0100SQ3Q");
+      });
+      initializeLoginButton("i0200SQ3Q");
+    </script>
+  </div>
+  </body>
+</html>

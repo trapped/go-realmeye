@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+{{template "head"}}
+<body>
+  {{template "header"}}
+  <div class="container">
+    {{template "noscript"}}
+    <div class="row">
+      <div class="span12">
+        <h1>
+          <span class="entity-name">{{.Specific.Name}}</span>
+        </h1>
+        <div class="row">
+          <div class="span5">
+            <table class="summary">
+              <tr>
+                <td>Chars</td>
+                <td>{{len .Specific.Characters}}</td>
+              </tr>
+              <tr>
+                <td>Fame</td>
+                <td>
+                  <span class="numeric">{{.Specific.Fame}}</span>{{if .Specific.Fame}} ({{.Specific.FameRank}}<sup>{{.Specific.FameRank | ordinal}}</sup>){{end}}
+                </td>
+              </tr>
+              <tr>
+                <td>Exp</td>
+                <td>
+                  <span class="numeric">{{.Specific.Exp}}</span>{{if .Specific.Exp}} ({{.Specific.ExpRank}}<sup>{{.Specific.ExpRank | ordinal}}</sup>){{end}}
+                </td>
+              </tr>
+              <tr>
+                <td>Rank</td>
+                <td>
+                  <div class="star-container">{{.Specific.Stars}}<div class="star star-{{.Specific.Stars | starstring}}"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Account fame</td>
+                <td>
+                  <span class="numeric">{{.Specific.AccountFame}}</span>{{if gt .Specific.AccountFame 500}} ({{.Specific.AccountFameRank}}<sup>{{.Specific.AccountFameRank | ordinal}}</sup>){{end}}
+                </td>
+              </tr>
+              {{if .Specific.Guild}}
+              <tr>
+                <td>Guild</td>
+                <td>
+                  <a href="/guild/{{.Specific.Guild}}">{{.Specific.Guild}}</a>
+                </td>
+              </tr>
+              <tr>
+                <td>Guild Rank</td>
+                <td>{{.Specific.GuildRank | guildrankstring}}</td>
+              </tr>
+              {{end}}
+              <tr>
+                <td>Created</td>
+                <td>{{.Specific.Created | humantime}}</td>
+              </tr>
+              <tr>
+                <td>Last seen</td>
+                <td>
+                  <span class="timeago" title="{{.Specific.LastSeen.Time}}">{{.Specific.LastSeen.Time | humantime}}</span>{{if .Specific.LastSeen.Time}} at {{.Specific.LastSeen.Server}} as {{.Specific.LastSeen.Class}}{{end}}
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="span7">
+            <div class="well description" id="player-description">
+              {{if .Specific.Description}}
+              <div class="line1 description-line">{{index .Specific.Description 0 | html}}</div>
+              <div class="line2 description-line">{{index .Specific.Description 1 | html}}</div>
+              <div class="line3 description-line">{{index .Specific.Description 2 | html}}</div>
+              {{else}}
+              <div class="help">If this is your character, then you can add some description here, when you are logged in to RealmEye.</div>
+              {{end}}
+            </div>
+          </div>
+        </div>
+        <ul class="nav nav-tabs player-tabs">
+          <li class="active">
+            <a href="/player/{{.Specific.Name}}">Characters ({{len .Specific.Characters}})</a>
+          </li>
+          <li>
+            <a href="/offers-by/{{.Specific.Name}}">Offers ({{len .Specific.Offers}})</a>
+          </li>
+          <li>
+            <a href="/pets-of/{{.Specific.Name}}">Pet Yard ({{len .Specific.Pets}})</a>
+          </li>
+          <li>
+            <a href="/graveyard-of-player/{{.Specific.Name}}">Graveyard</a>
+          </li>
+          <li>
+            <a href="/fame-history-of-player/{{.Specific.Name}}">History</a>
+          </li>
+        </ul>
+        {{if .Specific.Characters}}
+        <table id="table-characters" class="table table-striped tablesorter">
+          <thead>
+            <tr>
+              <th></th>
+              <th></th>
+              <th>Class</th>
+              <th> <abbr title="Level">L</abbr>
+              </th>
+              <th> <abbr title="Class Quests Completed">CQC</abbr>
+              </th>
+              <th>Fame</th>
+              <th>Exp</th>
+              <th>
+                <abbr title="Place">Pl.</abbr>
+              </th>
+              <th>Equipment</th>
+              <th>Stats</th>
+              <th>Last seen</th>
+              <th>
+                <abbr title="Server">Srv.</abbr>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {{range $char := .Specific.Characters}}
+            <tr>
+              <td>
+                {{if $char.Pet.Type}}
+                <span class="pet" data-item="{{$char.Pet.Type}}"></span>
+                {{end}}
+              </td>
+              <td>
+                <a id="character-picture" class="character" href="/top-characters-with-outfit/{{$char.Class}}/{{$char.Outfit.Skin}}/{{$char.Outfit.Clothing}}/{{$char.Outfit.Accessory}}" style="background-position: -210px -462px" data-class="{{$char.Class}}" data-skin="{{$char.Outfit.Skin}}" data-dye1="{{$char.Outfit.Dye1}}" data-dye2="{{$char.Outfit.Dye2}}" data-accessory-dye-id="{{$char.Outfit.Accessory}}" data-clothing-dye-id="{{$char.Outfit.Clothing}}" data-count="{{$char.Outfit.Occurrences}}"></a>
+              </td>
+              <td>{{$char.Class | classstring}}</td>
+              <td>{{$char.Level}}</td>
+              <td>{{index $.Specific.ClassQuests $char.Class}}/5</td>
+              <td>{{$char.Fame}}</td>
+              <td>{{$char.Exp}}</td>
+              <td>
+                <a href="/top-{{$char.Class | classstring | plural}}/{{$char.Rank}}">{{$char.Rank}}</a>
+              </td>
+              <td>
+                <span class="item" data-item="{{(index $char.Items 0).Type}}"></span>
+                <span class="item" data-item="{{(index $char.Items 1).Type}}"></span>
+                <span class="item" data-item="{{(index $char.Items 2).Type}}"></span>
+                <span class="item" data-item="{{(index $char.Items 3).Type}}"></span>
+              </td>
+              <td>
+                <span class="player-stats" data-stats="[767,192,56,41,78,28,53,79]" data-bonuses="[120,0,0,16,3,0,0,4]" data-class="804" data-level="20">{{$char.MaxedStats}}/8</span>
+              </td>
+              <td>
+                <span class="timeago" title="2014-07-13T20:37:27Z">2014-07-13 20:37:27</span>
+              </td>
+              <td>
+                <abbr title="EUSouthWest">EUSW</abbr>
+              </td>
+            </tr>
+            {{end}}
+          </tbody>
+        </table>
+        {{end}}
+      </div>
+      <div class="span2"></div>
+    </div>
+    <script type="text/javascript">
+      addAnchorsInDescription("player-description", null);
+      makeSortable("table-characters", {
+        0: {"sorter": false},
+        1: {"sorter": false},
+        2: {"sorter": "text"},
+        3: {"sorter": "digit"},
+        4: {"sorter": "text"},
+        5: {"sorter": "digit"},
+        6: {"sorter": "digit"},
+        7: {"sorter": "digit"},
+        8: {"sorter": false},
+        9: {"sorter": "text"},
+        10:{"sorter": "text"},
+        11:{"sorter": "text"}
+      });
+      renderPets("table-characters");
+      cssForColumn("table-characters", 1, "padding-right", "0");
+      $(function() {
+        drawCharacters();
+      });
+      $(function() {
+        makePortraitPopovers("table-characters");
+      });
+      renderNumeric("table-characters", 6);
+      renderNumeric("table-characters", 7);
+      renderNumeric("table-characters", 8);
+      renderItems("table-characters");
+      renderStats("table-characters");
+      bookmarkPlayer("{{.Specific.Name}}");</script>
+  </div>
+</body>
+</html>

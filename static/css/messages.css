@@ -1,0 +1,6 @@
+table.threads td:nth-child(1), table.threads th:nth-child(1) {
+  max-width: 400px;
+  width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

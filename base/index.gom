@@ -1,0 +1,267 @@
+{{define "head"}}
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=9">
+    <meta name="msapplication-config" content="none">
+    <meta name="viewport" content="width=1040">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/tablesorter.css" rel="stylesheet">
+    <link href="/css/realmeye.css" rel="stylesheet">
+    <link href="/css/characters.css" rel="stylesheet">
+    <link href="/css/select2.css" rel="stylesheet">
+    <link href="/css/messages.css" rel="stylesheet">
+    <script src="/js/jquery-1.8.2.min.js"></script>
+    <script src="/js/bs.min.js"></script>
+    <script src="/js/jquery.timeago.js"></script>
+    <script src="/js/jquery.timeago.en-short.js"></script>
+    <script src="/js/definition.js"></script>
+    <script src="/js/jquery.tablesorter.js"></script>
+    <script src="/js/realmeye.js"></script>
+    <script src="/js/underscore-min.js"></script>
+    <script src="/js/sheet.js"></script>
+    <script src="/js/characters.js"></script>
+    <title>{{.Title}}</title>
+    <meta name="keywords" content="{{.Keywords}}">
+    <meta name="description" content="{{.Description}}">
+    <link rel="canonical" href="{{.Location}}">
+  </head>
+{{end}}
+
+{{define "noscript"}}
+  <noscript>
+    <div class="alert">
+      It seems like you have disabled javascript. The site uses it extensively, so expect a much degraded experience!
+    </div>
+  </noscript>
+{{end}}
+
+{{define "search-player"}}
+  <input class="span{{template "span-length"}}" type="text" placeholder="Player search" id="search-player">
+  <script type="text/javascript">
+    $(function() {
+      addPlayerSearch("search-player");
+    });
+  </script>
+{{end}}
+
+{{define "search-guild"}}
+  <input class="span{{template "span-length"}}" type="text" placeholder="Guild search" id="search-guild">
+  <script type="text/javascript">
+    $(function() {
+      addGuildSearch("search-guild");
+    });
+  </script>
+{{end}}
+
+{{define "search-box"}}
+  <span class="player-search pull-left" id="search-box">
+    <input type="text" class="span2" placeholder="Search">
+      <div class="player-guild-toggle-panel">
+        <div class="btn-group" data-toggle="buttons-radio">
+          <button class="btn active">Player</button>
+          <button class="btn">Guild</button>
+        </div>
+      </div>
+  </span>
+  <script type="text/javascript">
+    $(function() {
+      initializeSearch("search-box");
+    });
+  </script>
+{{end}}
+
+{{define "login-button"}}
+  <div>
+    <a id="login-button" href="https://www.realmeye.com/log-in" class="btn">Log In</a>
+  </div>
+  <script type="text/javascript">
+    initializeLoginButton("login-button");
+  </script>
+{{end}}
+
+{{define "header"}}
+  <div class="navbar navbar-static-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">
+          <img class="realm-eye" src="/img/eye.png">
+          <span style="color: #333">Realm</span><span style="color: #08C">Eye</span>
+        </a>
+        <ul class="nav">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Guilds<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/top-guilds-by-fame">Top Guilds by Fame</a>
+              </li>
+              <li>
+                <a href="/top-guilds-by-exp">Top Guilds by Exp</a>
+              </li>
+              <li>
+                <a href="/servers-by-active-guilds">Servers by active Guilds</a>
+              </li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Players<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-submenu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Top Players</a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="/top-players-by-fame">by Fame</a>
+                  </li>
+                  <li>
+                    <a href="/top-players-by-exp">by Exp</a>
+                  </li>
+                  <li>
+                    <a href="/top-players-by-account-fame">by Account Fame</a>
+                  </li>
+                  <li>
+                    <a href="/top-graveyards-by/oryx-kills">by Graveyard</a>
+                  </li>
+                  <li>
+                    <a href="/top-players-with-no-guild">with no Guild</a>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a href="/top-oldest-active-players">Top Oldest Active Players</a>
+              </li>
+              <li>
+                <a href="/recently-seen-unnamed-players">Recently seen Unnamed Players</a>
+              </li>
+              <li>
+                <a href="/number-of-players-by-rank">Number of Players by Rank</a>
+              </li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Characters<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/top-characters">Top Characters</a>
+              </li>
+              <li>
+                <a href="/top-archers">Top Characters by Class</a>
+              </li>
+              <li>
+                <a href="/top-characters-with-outfit">Top Characters with Outfit</a>
+              </li>
+              <li>
+                <a href="/top-dead-characters-by/oryx-kills">Top Dead Characters</a>
+              </li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Pets<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/top-pets">Top Pets</a>
+              </li>
+              <li>
+                <a href="/top-pets-by-ability-heal">Top Pets by Ability</a>
+              </li>
+              <li>
+                <a href="/feed-power-of-items">Feed Power of Items</a>
+              </li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Items<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/items/keys">Keys</a>
+              </li>
+              <li>
+                <a href="/items/weapons">Equipment</a>
+              </li>
+              <li>
+                <a href="/items/accessory-dyes">Cloths &amp; Dyes</a>
+              </li>
+              <li>
+                <a href="/items/pets">Pet Eggs</a>
+              </li>
+              <li>
+                <a href="/items/pet-food">Pet Food</a>
+              </li>
+              <li>
+                <a href="/items/misc">Misc</a>
+              </li>
+              <li>
+                <a href="/items/dye-statistics">Dye statistics</a>
+              </li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Trading<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/current-offers">Current offers</a>
+              </li>
+              <li>
+                <a href="/recent-offers">Recent offers</a>
+              </li>
+              <li>
+                <a href="/trading-help">Help</a>
+              </li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Help<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/q-and-a">Q &amp; A</a>
+              </li>
+              <li>
+                <a href="/recent-changes">Recent changes</a>
+              </li>
+              <li>
+                <a href="/mreyeball">Mr. Eyeball</a>
+              </li>
+              <li>
+                <a href="/user-help">For Users</a>
+              </li>
+              <li>
+                <a href="/signature-help">User Signatures</a>
+              </li>
+              <li>
+                <a href="/donators">Donators</a>
+              </li>
+              <li>
+                <a href="/feedback">Feedback</a>
+              </li>
+              <li>
+                <a href="/privacy-policy">Privacy policy</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="/wiki/realm-of-the-mad-god" title="RotMG Wiki">Wiki</a>
+          </li>
+        </ul>
+        <div class="nav navbar-form navbar-right-side">
+          {{template "search-box"}}
+          <span class="auth-panel pull-right">
+            {{template "login-button"}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+{{end}}

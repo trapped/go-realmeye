@@ -1,0 +1,619 @@
+.navbar-static-top {
+  margin-bottom: 38px;
+}
+
+span.entity-name:hover {
+  font-family: monospace;
+}
+
+td.maxed, .pet-ability-maxed {
+  color: #996515;
+  text-shadow: 0px 0px 0.1em #FFD700;
+}
+
+.pet-ability-disabled {
+  color: #999;
+}
+
+.player-stats{
+  cursor: default;
+}
+
+.player-stats i, .cheapest-server i, .pet-ability i {
+  opacity: 0.5;
+}
+
+.pet-ability {
+  cursor: pointer;
+}
+
+.pet-ability-stats-table td {
+  text-align: right;
+}
+
+.stats-table, .alternatives-table {
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.stats-table td, .alternatives-table td, .alternatives-table th {
+  border: 0;
+  padding: 3px 6px 0px 0!important;
+  background-color: white !important;
+  color: #333; 
+}
+
+td.to-max, td.from-avg {
+  padding: 0px;
+  font-size: 0.8em;
+  line-height: 12px;
+  padding: 0 6px 0 0 !important;
+}
+
+td.to-max {
+  color: #0088CC; 
+}
+
+td.below-avg {
+  color: red;
+}
+
+td.above-avg {
+  color: green;
+}
+
+.too-many-members {
+  color: #844;
+}
+
+.popover {
+  width: auto !important;
+}
+
+table.table {
+  white-space: nowrap;
+}
+
+.brand {
+  font-weight: bold !important;
+  text-shadow: 0px 0px 0.1em #888 !important;
+  padding: 10px 5px 10px 20px !important;
+  margin-left: 20px !important; 
+}
+
+.realm-eye {
+  position: absolute;
+  margin-top: -14px;
+  margin-left: -46px;
+}
+
+.summary td:nth-child(2) {
+  padding-left: 10px;
+}
+
+.item {
+  display: inline-block;
+  position: relative;
+  width: 46px;
+  height: 46px;
+  margin: -1px -3px -3px;
+  background: url(renders.png) transparent;
+}
+
+.pet {
+  display: inline-block;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background: url(renders.png) transparent;
+  overflow: hidden;
+}
+
+.old-pet {
+  display: inline-block;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background: url(oldrenders.png) transparent;
+  overflow: hidden;
+}
+
+table .pet {
+  margin-top: 6px;
+}
+
+.pet-container {
+  text-align: center;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+
+.home {
+  text-align: center;
+}
+
+.motto {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 3em;
+  font-weight: bold;
+  text-align: center;
+  color: #222;
+}
+
+.row.player-search {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.row.player-search input {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-size: 2em;
+}
+
+.player-search input {
+  text-align: center;
+}
+
+.guild-search {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.guild-search input {
+  height: 40px;
+  text-align: center;
+  font-size: 2em;
+}
+
+.beta {
+  position: relative;
+}
+
+.beta span {
+  position: absolute;
+  font-size: 0.5em;
+  top: -9px;
+  left: -22px;
+  color: #551100;
+}
+
+.feedback {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.feedback form {
+  display: inline;
+}
+
+.star {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-image: url("../img/stars-transparent.png");
+  background-repeat: no-repeat;
+  position: absolute;
+  top: -4px;
+  right: -8px;
+}
+
+.star-container {
+  position: relative;
+  padding-right: 16px;
+}
+
+.star-light-blue { background-position: 0 0; }
+.star-blue { background-position: 0 -24px; }
+.star-red { background-position: 0 -48px; }
+.star-orange { background-position: 0 -72px; }
+.star-yellow { background-position: 0 -96px; }
+.star-white { background-position: 0 -120px; }
+
+.summary .star {
+  right: auto;
+}
+
+.fame, .gold {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: -4px;
+}
+
+.fame {
+  background-image: url("../img/fame.png");
+}
+
+.gold {
+  background-image: url("../img/gold.png");
+}
+
+.fame-container, .gold-container {
+  position: relative;
+  padding-right: 16px;
+  text-align: right;
+}
+
+
+.agent-status {
+  margin-top: 60px;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.agent-status .well {
+  min-width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  display: inline-block;
+}
+
+.agent-status ul, .agent-status h3, .agent-status p {
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.agent-status ul {
+  list-style: none;
+}
+
+.agent-status li {
+  padding: 4px 4px;
+}
+
+.recent-changes-home {
+  text-align: center;
+}
+
+.recent-changes-home .well {
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.recent-changes-home .well h5 {
+  margin-top: 0;
+}
+
+.diff {
+  position: relative;
+}
+
+.diff-smaller, .diff-bigger {
+  position: absolute;
+  font-size: 0.7em;
+  right: 0;
+  bottom: -12px;
+}
+
+.diff-smaller {
+  color: blue;
+}
+
+.diff-bigger {
+  color: red;
+}
+
+.description {
+  margin-bottom: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.edit-description {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+}
+
+.description .help {
+  font-size: 0.9em;
+  color: #999;
+}
+
+.description .help a {
+  color: #09D;
+}
+
+.line1, .line2, .line3 {
+  text-align: center;
+  padding-bottom: 10px;
+  font-size: 1.2em;
+  white-space: nowrap;
+}
+
+.line1 {
+  font-weight: bold;
+  font-size: 1.6em;
+  padding-bottom: 15px;
+}
+
+.donate {
+  margin-left: 10px;
+}
+
+.donate img {
+  vertical-align: top !important;
+}
+
+.donate .popover-content {
+  font-size: 14px;
+  font-weight: normal;
+  color: #333333; 
+}
+
+.donate .popover-title {
+  color: #333333;
+  font-weight: bold;
+}
+
+.paypal-button {
+  display: inline;
+}
+
+.paypal-button form {
+  display: inline;
+}
+
+.dye-usage-statistics-heading select {
+  height: 34px;
+  vertical-align: baseline;
+  font-size: 0.8em;
+}
+
+
+table.character-dyes td {
+  padding: 0;
+  border: 0;
+  background-color: white !important;
+}
+
+
+.container {
+  width: 1040px !important;
+  /* padding-left: 10px; */
+}
+
+.navbar-inner {
+  padding: 0px;
+}
+
+.ad-container {
+  margin-left: 30px;
+}
+
+.portrait {
+  width: 44px;
+  height: 44px;
+}
+
+ul.player-not-found {
+	list-style: none;
+	margin-left: 30px;
+	font-size: 1.4em;
+}
+
+ul.player-not-found li {
+	line-height: 1.5em;
+}
+
+.player-tabs, .guild-tabs {
+  margin-top: 8px;
+}
+
+.relation-tabs {
+  margin-top: -12px;
+  margin-left: 8px;
+}
+
+.navbar-right-side {
+  position: relative;
+}
+
+.player-search {
+  margin: 1px 0;
+  position: relative;
+}
+
+.player-guild-toggle-panel {
+  display: none;
+  position: absolute;
+  overflow: hidden;
+  width: 120px;
+  top: 0;
+  right: -120px;
+  z-index: 1;
+}
+
+.player-guild-toggle-panel .btn-group {
+  margin-left: -120px;
+}
+
+.player-guild-toggle-panel .btn {
+  width: 60px;
+}
+
+.player-guild-toggle-panel .btn:first-child {
+  -webkit-border-top-left-radius: 0px;
+  -moz-border-radius-topleft: 0px;
+  border-top-left-radius: 0px;
+  -webkit-border-bottom-left-radius: 0px;
+  -moz-border-radius-bottomleft: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.navbar .input-append .btn, .navbar .input-append .btn-group {
+  margin-top: 0;
+  border-color: #BBBBBB #BBBBBB #A2A2A2;
+}
+
+.navbar .nav>li>a {
+  padding: 10px 12px 10px !important;
+}
+
+.auth-panel {
+  margin: 1px 0 0 10px;
+}
+
+.auth-panel .icon {
+  margin-right: -5px;
+  margin-top: 3px;
+  opacity: 0.5;
+}
+
+.offer-type-tabs {
+  margin-top: 20px;
+}
+
+.item-subcategory-name {
+  width: 100px;
+  vertical-align: top;
+  padding-top: 18px;
+  padding-right: 2px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.guild-server-activity .nv-x line {
+  opacity: 0 !important;
+}
+
+.create-thread .modal {
+  width: 920px;
+  margin-left: -500px;
+}
+
+.create-thread .select2-container {
+  margin-left: 0;
+}
+
+.create-thread .select2-container ul {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.create-thread .select2-container.select2-dropdown-open ul {
+  -webkit-border-bottom-left-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
+  -moz-border-bottom-left-radius: 0;
+  -moz-border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.create-thread textarea {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.create-thread .preview {
+  margin-left: 0;
+  width: 578px;
+}
+
+.preview {
+  position: relative;
+  padding: 20px;
+  background-color: #FFFFFF;
+  border: 1px solid #ddd;
+  border-radius: 6px 6px 0px 0px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+  margin-bottom: 10px;
+  overflow-x: auto;
+  margin-bottom: -1px;
+  z-index: -1;
+}
+
+.preview .preview-label {
+  position: absolute;
+  top: 3px;
+  right: 6px;
+}
+
+.markdown-toggle input {
+  margin-top: -1px;
+}
+
+.markdown-toggle label {
+  display: inline-block;
+  margin-left: 3px;
+  font-size: 0.9em;
+}
+
+.message-text {
+  white-space: pre-wrap;
+}
+
+.message-text.markdown {
+  white-space: normal;
+}
+
+.guild-star-distribution {
+  display: inline-block;
+  border: 1px solid #aaa;
+  background-color: #ddd;
+  padding: 0;
+  width: 50px;
+  height: 12px;
+  text-align: left;
+  line-height: 12px;
+}
+
+.guild-star-count {
+  display: inline-block;
+  height: 12px;
+}
+
+.cookie-directive-alert {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #f9f9f9;
+  left: 0;
+  padding: 16px;
+  border-top: 1px solid #ddd;
+  text-align: center;
+}
+
+.cookie-directive-alert .close {
+  float: none;
+  margin-left: 16px;
+}
+
+table.table-normal-wrap {
+  white-space: normal;
+}
+
+table td[valign=top], table th[valign=top] {
+  vertical-align: top;
+}
+
+table td[valign=bottom], table th[valign=bottom] {
+  vertical-align: bottom;
+}
+
+table td[valign=middle], table th[valign=middle] {
+  vertical-align: middle;
+}
+
+table td[align=left], table th[align=left] {
+  text-align: left;
+}
+
+table td[align=right], table th[align=right] {
+  text-align: right;
+}
+
+table td[align=center], table th[align=center] {
+  text-align: center;
+}
