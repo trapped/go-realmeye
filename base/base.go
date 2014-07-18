@@ -1,7 +1,6 @@
 package base
 
 import (
-	"fmt"
 	humanize "github.com/dustin/go-humanize"
 	"html/template"
 	"math"
@@ -199,7 +198,7 @@ func edist(a string, b string, casesens bool, distance bool) float32 {
 			}
 		}
 	}
-	return float32(diff)
+	return (float32(diff) / 3) / float32(len(longest))
 }
 
 //Whether the `jaccard` function should recurse when calculating the Jaccard Distance.
@@ -217,13 +216,19 @@ func jaccard(a string, b string, casesens bool, distance bool) float32 {
 
 	//calculate intersection size
 	for _, c := range a {
-		if strings.ContainsRune(b, c) {
+		if casesens {
+			c = rune(strings.ToUpper(string(c))[0])
+		}
+		if strings.ContainsRune(b, c) && !strings.ContainsRune(intersection, c) {
 			intersection += string(c)
 		}
 	}
 
 	//calculate union size
 	for _, c := range a + b {
+		if casesens {
+			c = rune(strings.ToUpper(string(c))[0])
+		}
 		if !strings.ContainsRune(union, c) {
 			union += string(c)
 		}
@@ -243,13 +248,14 @@ func jaccard(a string, b string, casesens bool, distance bool) float32 {
 }
 
 //Which function the `Similars` should use.
-var SIMILARITY_FUNC func(a string, b string, casesens bool, distance bool) float32 = jaccard
+var SIMILARITY_FUNC func(a string, b string, casesens bool, distance bool) float32 = func(a string, b string, casesens bool, distance bool) float32 {
+	return float32((edist(a, b, casesens, distance) / 2) + (jaccard(a, b, casesens, distance))/2.5)
+}
 
 func Similars(needle string, haystack []string, max int, casesens bool) (r []string) {
-	tolerance := float32(0.3) //float32(len(needle)) / 100 * 30
-	for i := 0; i < len(haystack) && i < max; i++ {
+	tolerance := float32(0.4) //float32(len(needle)) / 100 * 30
+	for i := 0; i < len(haystack) && len(r) <= max; i++ {
 		dist := SIMILARITY_FUNC(needle, haystack[i], casesens, true)
-		fmt.Printf("[BASE] String dissimilarity between %v and %v: %v. tolerance: %v\n", needle, haystack[i], dist, tolerance)
 		if dist <= tolerance {
 			r = append(r, haystack[i])
 		}

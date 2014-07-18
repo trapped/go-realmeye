@@ -5,4 +5,8 @@ All serverside code is copyrighted to me; all clientside code is copyrighted to 
 
 ---
 
-*I took out the code that makes it actually run.*
+**I took out the code that makes it actually run.**
+
+###String similarity equations/algorithms used for the "player not found" page
+
+I've implemented both the **Edit Distance** (number of edits needed to transform a string into another) and the **Jaccard Index** (also called **Similarity Coefficient**) algorithms/equations - though the latter includes both the *similarity* and the *dissimilarity* parts: [Gist](https://gist.github.com/trapped/d1e62dd3b05e00bfd904)

@@ -56,14 +56,18 @@
               {{end}}
               <tr>
                 <td>Created</td>
-                <td>{{.Specific.Created | humantime}}</td>
+                <td>
+                <span class="timeago" title="{{.Specific.Created}}">{{.Specific.Created | humantime}}</span>
+                </td>
               </tr>
+              {{if .Specific.LastSeen.Time}}
               <tr>
                 <td>Last seen</td>
                 <td>
-                  <span class="timeago" title="{{.Specific.LastSeen.Time}}">{{.Specific.LastSeen.Time | humantime}}</span>{{if .Specific.LastSeen.Time}} at {{.Specific.LastSeen.Server}} as {{.Specific.LastSeen.Class}}{{end}}
+                  <span class="timeago" title="{{.Specific.LastSeen.Time}}">{{.Specific.LastSeen.Time | humantime}}</span> at {{.Specific.LastSeen.Server}} as {{.Specific.LastSeen.Class}}
                 </td>
               </tr>
+              {{end}}
             </table>
           </div>
           <div class="span7">
