@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+{{template "head"}}
+<body>
+  {{template "header"}}
+  <div class="container">
+    {{template "noscript"}}
+    <div class="row">
+      <div class="span12">
+        <div class="row">
+          <div class="span12">
+            <h2>Find a player:</h2>
+            <div class="row player-search">
+              {{define "span-length"}}8{{end}}
+              {{template "search-player"}}
+            </div>
+          </div>
+        <div class="span2"></div>
+      </div>
+    </div>
+  </body>
+</html>

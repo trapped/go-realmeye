@@ -253,7 +253,7 @@ var SIMILARITY_FUNC func(a string, b string, casesens bool, distance bool) float
 }
 
 func Similars(needle string, haystack []string, max int, casesens bool) (r []string) {
-	tolerance := float32(0.4) //float32(len(needle)) / 100 * 30
+	tolerance := float32(1) / (float32(len(needle)) / 2) //float32(len(needle)) / 100 * 30
 	for i := 0; i < len(haystack) && len(r) <= max; i++ {
 		dist := SIMILARITY_FUNC(needle, haystack[i], casesens, true)
 		if dist <= tolerance {

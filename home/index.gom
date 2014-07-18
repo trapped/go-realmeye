@@ -9,9 +9,9 @@
       <div class="span12">
         <div class="home row">
           <div class="span12">
-            <img class="realm-eye-huge" src="/img/eye-big.png"></div>
+            <img class="realm-eye-huge" src="/img/eye-big.png">
+          </div>
         </div>
-        <div style="margin: auto; width: 730px"></div>
         <div class="row">
           <div class="motto span12">We are {{.Specific.Watching}}watching you!</div>
         </div>
@@ -19,9 +19,9 @@
           {{define "span-length"}}4{{end}}
           {{template "search-player"}}
           {{template "search-guild"}}
+        </div>
+        <div class="span2"></div>
       </div>
-      <div class="span2"></div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

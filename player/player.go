@@ -5,14 +5,26 @@ import (
 	"github.com/trapped/realmeye/base"
 	"github.com/trapped/realmeye/db"
 	"net/http"
+	"strings"
+	"unicode"
 )
 
 func Serve(w http.ResponseWriter, req *http.Request) {
-	p, err := db.Default.FindPlayer(mux.Vars(req)["name"])
+	name := strings.TrimFunc(mux.Vars(req)["name"], unicode.IsLetter)
+	b := base.Page{}
 
-	b := base.Page{
-		Specific: p,
+	if len(name) == 0 {
+		tem := b.Template("player/search.gom")
+		err := tem.Execute(w, b)
+		if err != nil {
+			panic(err)
+		}
+		return
 	}
+
+	p, err := db.Default.FindPlayer(name)
+
+	b.Specific = p
 
 	if err != nil {
 		tem := b.Template("player/notfound.gom")
