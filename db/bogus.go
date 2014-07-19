@@ -56,7 +56,7 @@ func (b *Bogus) FindPlayer(name string) (*Player, error) {
 				Fame:       1523,
 				Exp:        20000,
 				Rank:       133,
-				Pet:        &Pet{},
+				Pet:        Pet{},
 				Items:      make(map[int]Item, 0),
 				LastSeen:   LastSeen{},
 				MaxedStats: 3,

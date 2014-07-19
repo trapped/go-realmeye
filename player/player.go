@@ -10,7 +10,9 @@ import (
 )
 
 func Serve(w http.ResponseWriter, req *http.Request) {
-	name := strings.TrimFunc(mux.Vars(req)["name"], unicode.IsLetter)
+	name := strings.TrimFunc(mux.Vars(req)["name"], func(r rune) bool {
+		return unicode.IsSymbol(r) || unicode.IsSpace(r) || unicode.IsMark(r)
+	})
 	b := base.Page{}
 
 	if len(name) == 0 {

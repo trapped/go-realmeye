@@ -23,7 +23,7 @@ type Page struct {
 	Specific    interface{}
 }
 
-func ordinal(num int) string {
+func Ordinal(num int) string {
 	s := strconv.Itoa(num)
 	d := s[len(s)-1]
 	switch d {
@@ -38,7 +38,7 @@ func ordinal(num int) string {
 	}
 }
 
-func starstring(num int) string {
+func StarString(num int) string {
 	switch {
 	case num >= 0 && num <= 13:
 		return "light-blue"
@@ -57,7 +57,7 @@ func starstring(num int) string {
 	}
 }
 
-func guildrankstring(num int) string {
+func GuildRankString(num int) string {
 	switch num {
 	case 0:
 		return "Initiate"
@@ -74,7 +74,7 @@ func guildrankstring(num int) string {
 	}
 }
 
-func classstring(num int) string {
+func ClassString(num int) string {
 	switch num {
 	case 768:
 		return "Rogue"
@@ -107,7 +107,7 @@ func classstring(num int) string {
 	}
 }
 
-func plural(s string) string {
+func Plural(s string) string {
 	if strings.HasSuffix(s, "ess") {
 		return s + "es"
 	} else {
@@ -115,7 +115,7 @@ func plural(s string) string {
 	}
 }
 
-func humantime(t string) string {
+func HumanTime(t string) string {
 	if len(t) == 0 {
 		return "never"
 	}
@@ -152,15 +152,30 @@ func humantime(t string) string {
 	return humanize.Time(datetime)
 }
 
-func split(t string, s string) []string {
-	return strings.Split(t, s)
+func FameGoals(fame int) int {
+	switch {
+	case fame < 20:
+		return 0
+	case fame >= 20 && fame < 150:
+		return 1
+	case fame >= 150 && fame < 400:
+		return 2
+	case fame >= 400 && fame < 800:
+		return 3
+	case fame >= 800 && fame < 2000:
+		return 4
+	case fame >= 2000:
+		return 5
+	default:
+		return 0
+	}
 }
 
-func last(a []string) string {
+func Last(a []string) string {
 	return a[len(a)-1]
 }
 
-func hasext(s string) bool {
+func HasExt(s string) bool {
 	return len(strings.Split(s, ".")) > 1
 }
 
@@ -172,10 +187,39 @@ func sub(a int, b int) int {
 	return a - b
 }
 
+func Aitoa(a []int) (result []string) {
+	for i := 0; i < len(a); i++ {
+		result = append(result, strconv.Itoa(a[i]))
+	}
+	return result
+}
+
+func Aatoi(s string, sep string) (result []int) {
+	temp := strings.Split(s, sep)
+	for i := 0; i < len(temp); i++ {
+		n, err := strconv.Atoi(temp[i])
+		if err != nil {
+			panic(err)
+		}
+		result = append(result, n)
+	}
+	return result
+}
+
+func join(a []string, s string) (result string) {
+	for i := 0; i < len(a); i++ {
+		result += a[i]
+		if i < len(a)-1 {
+			result += s
+		}
+	}
+	return result
+}
+
 //Calculates the *edit distance* between two strings:
 //the required number of edits required to make them identical.
 //Can be both case sensitive and insensitive.
-func edist(a string, b string, casesens bool, distance bool) float32 {
+func EDist(a string, b string, casesens bool, distance bool) float32 {
 	if a == b {
 		return 0
 	}
@@ -210,7 +254,7 @@ var JACCARD_RECURSIVE bool = false
 //Respectively, the Jaccard Distance (Dissimilarity coefficient) between two
 //sets has the following formula: `Jd(A,B) = 1 - J(A,B) = (|A u B| - |A n B|) / |A u B|`
 //given that `J(A,B) = 0` if `A` and `B` are both empty (0% dissimilarity).
-func jaccard(a string, b string, casesens bool, distance bool) float32 {
+func Jaccard(a string, b string, casesens bool, distance bool) float32 {
 	intersection := ""
 	union := ""
 
@@ -238,7 +282,7 @@ func jaccard(a string, b string, casesens bool, distance bool) float32 {
 		return float32(len(intersection)) / float32(len(union))
 	} else {
 		if JACCARD_RECURSIVE {
-			return 1 - jaccard(a, b, casesens, !distance)
+			return 1 - Jaccard(a, b, casesens, !distance)
 		} else {
 			return (float32(len(union)) - float32(len(intersection))) / float32(len(union))
 		}
@@ -249,7 +293,7 @@ func jaccard(a string, b string, casesens bool, distance bool) float32 {
 
 //Which function the `Similars` should use.
 var SIMILARITY_FUNC func(a string, b string, casesens bool, distance bool) float32 = func(a string, b string, casesens bool, distance bool) float32 {
-	return float32((edist(a, b, casesens, distance) / 2) + (jaccard(a, b, casesens, distance))/2.5)
+	return float32((EDist(a, b, casesens, distance) / 2) + (Jaccard(a, b, casesens, distance))/2.5)
 }
 
 func Similars(needle string, haystack []string, max int, casesens bool) (r []string) {
@@ -267,18 +311,21 @@ func (p *Page) Template(file string) *template.Template {
 	cwd, _ := os.Getwd()
 	tem := template.New(filepath.Base(file))
 	tem = template.Must(tem.Funcs(template.FuncMap{
-		"ordinal":         ordinal,
-		"starstring":      starstring,
-		"guildrankstring": guildrankstring,
-		"classstring":     classstring,
-		"humantime":       humantime,
-		"split":           split,
-		"last":            last,
-		"hasext":          hasext,
+		"ordinal":         Ordinal,
+		"starstring":      StarString,
+		"guildrankstring": GuildRankString,
+		"classstring":     ClassString,
+		"humantime":       HumanTime,
+		"split":           strings.Split,
+		"last":            Last,
+		"hasext":          HasExt,
 		"add":             add,
 		"sub":             sub,
-		"plural":          plural,
-		"edist":           edist,
+		"plural":          Plural,
+		"edist":           EDist,
+		"famegoals":       FameGoals,
+		"join":            join,
+		"aitoa":           Aitoa,
 	}).ParseFiles(
 		filepath.Join(cwd, "./base/index.gom"),
 		filepath.Join(cwd, "./"+file),

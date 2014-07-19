@@ -15,12 +15,11 @@ type Pet struct {
 }
 
 type Outfit struct {
-	Skin        int
-	Dye1        int
-	Dye2        int
-	Accessory   int
-	Clothing    int
-	Occurrences int
+	Skin      int
+	Dye1      int
+	Dye2      int
+	Accessory int
+	Clothing  int
 }
 
 type ClassQuest struct {
@@ -29,17 +28,19 @@ type ClassQuest struct {
 }
 
 type Character struct {
-	Class      int
-	Level      int
-	Fame       int
-	Exp        int
-	Rank       int
-	Pet        *Pet
-	Items      map[int]Item
-	LastSeen   LastSeen
-	MaxedStats int
-	Stats      []int
-	Outfit     Outfit
+	Class       int
+	Level       int
+	Fame        int
+	Exp         int
+	Rank        int
+	Pet         Pet
+	Items       map[int]Item
+	LastSeen    LastSeen
+	MaxedStats  int
+	Stats       []int
+	Outfit      Outfit
+	OutfitCount int
+	Backpack    bool
 }
 
 type Player struct {

@@ -17,6 +17,7 @@ type Cache struct {
 	Initialized bool
 	Players     []*Player
 	PlayerNames []string
+	Outfits     map[Outfit]int
 }
 
 type MySQL struct {
@@ -66,6 +67,7 @@ func (m *MySQL) Close() {
 func (m *MySQL) cache_players() {
 	fmt.Println("[DBCACHE] Caching players...")
 	temp := make(map[int]*Player)
+	temp_outfits := make(map[Outfit]int)
 	//accounts
 	rows, err := m.Connection.Query("SELECT id, name, guildRank, regTime FROM accounts")
 	if err != nil {
@@ -102,7 +104,7 @@ func (m *MySQL) cache_players() {
 					panic(err)
 				}
 				if temp[__member] == nil {
-					fmt.Printf("[DBCACHE] Cannot assign guild membership to account #%v (not in the 'accounts' table)\n", __member)
+					fmt.Printf("[DBCACHE] Cannot assign guild membership to account #%v (not in 'accounts')\n", __member)
 				} else {
 					temp[__member].Guild = name
 				}
@@ -124,7 +126,7 @@ func (m *MySQL) cache_players() {
 			panic(err)
 		}
 		if temp[id] == nil {
-			fmt.Printf("[DBCACHE] Cannot assign class stats to account #%v (not in the 'accounts' table)\n", id)
+			fmt.Printf("[DBCACHE] Cannot assign class stats to account #%v (not in 'accounts')\n", id)
 		} else {
 			temp[id].ClassQuests = make(map[int]ClassQuest)
 			c := ClassQuest{
@@ -147,9 +149,49 @@ func (m *MySQL) cache_players() {
 			panic(err)
 		}
 		if temp[id] == nil {
-			fmt.Printf("[DBCACHE] Cannot assign account stats to account #%v (not in the 'accounts' table)\n", id)
+			fmt.Printf("[DBCACHE] Cannot assign account stats to account #%v (not in 'accounts')\n", id)
 		} else {
 			temp[id].AccountFame = accountfame
+		}
+	}
+	//characters
+	rows, err = m.Connection.Query("SELECT accId, charType, level, exp, fame, items, stats, tex1, tex2, pet, hasBackpack, skin FROM characters")
+	if err != nil {
+		panic(err)
+	}
+	for rows.Next() {
+		accId, charType, level, exp, fame, tex1, tex2, pet, skin := -1, -1, -1, -1, -1, -1, -1, -1, -1
+		items, stats := "", ""
+		hasBackpack := false
+		err := rows.Scan(&accId, &charType, &level, &exp, &fame, &items, &stats, &tex1, &tex2, &pet, &hasBackpack, &skin)
+		if err != nil {
+			panic(err)
+		}
+		if temp[accId] == nil {
+			fmt.Printf("[DBCACHE] Cannot assign account stats to account #%v (not in 'accounts')\n", accId)
+		} else {
+
+			_pet := Pet{
+				Type: pet,
+			}
+			outfit := Outfit{
+				Skin:      skin,
+				Accessory: tex2,
+				Clothing:  tex1,
+			}
+			temp_outfits[outfit]++
+			_stats := base.Aatoi(stats, ", ")
+			temp[accId].Characters = append(temp[accId].Characters, Character{
+				Class:       charType,
+				Level:       level,
+				Exp:         exp,
+				Fame:        fame,
+				Pet:         _pet,
+				Stats:       _stats,
+				Outfit:      outfit,
+				OutfitCount: temp_outfits[outfit],
+				Backpack:    hasBackpack,
+			})
 		}
 	}
 	//swap arrays for no downtime
@@ -159,6 +201,8 @@ func (m *MySQL) cache_players() {
 	}
 	m.Cache.Players = newcache
 	m.Cache.PlayerNames = names
+	m.Cache.Outfits = temp_outfits
+	m.Cache.Initialized = true
 	fmt.Printf("[DBCACHE] Cached %v players\n", len(newcache))
 }
 
