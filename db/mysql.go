@@ -17,7 +17,7 @@ type Cache struct {
 	Initialized bool
 	Players     []*Player
 	PlayerNames []string
-	Outfits     map[Outfit]int
+	Outfits     map[string]int
 }
 
 type MySQL struct {
@@ -67,7 +67,7 @@ func (m *MySQL) Close() {
 func (m *MySQL) cache_players() {
 	fmt.Println("[DBCACHE] Caching players...")
 	temp := make(map[int]*Player)
-	temp_outfits := make(map[Outfit]int)
+	temp_outfits := make(map[string]int)
 	//accounts
 	rows, err := m.Connection.Query("SELECT id, name, guildRank, regTime FROM accounts")
 	if err != nil {
@@ -134,6 +134,7 @@ func (m *MySQL) cache_players() {
 				BestFame:  bestfame,
 			}
 			temp[id].ClassQuests[class] = c
+			fmt.Printf("[DBCACHE] Best fame/level for class %v for %v: %v/%v\n", base.Capitalize(base.ClassString(class)), temp[id].Name, temp[id].ClassQuests[class].BestFame, temp[id].ClassQuests[class].BestLevel)
 		}
 	}
 	//account stats
@@ -179,26 +180,32 @@ func (m *MySQL) cache_players() {
 				Accessory: tex2,
 				Clothing:  tex1,
 			}
-			temp_outfits[outfit]++
+			_outfit := strings.Join(base.Aitoa([]int{outfit.Skin, outfit.Accessory, outfit.Clothing}), ",")
+			temp_outfits[_outfit]++
 			_stats := base.Aatoi(stats, ", ")
-			temp[accId].Characters = append(temp[accId].Characters, Character{
-				Class:       charType,
-				Level:       level,
-				Exp:         exp,
-				Fame:        fame,
-				Pet:         _pet,
-				Stats:       _stats,
-				Outfit:      outfit,
-				OutfitCount: temp_outfits[outfit],
-				Backpack:    hasBackpack,
+			_items := base.Aatoi(items, ", ")
+			temp[accId].Characters = append(temp[accId].Characters, &Character{
+				Class:    charType,
+				Level:    level,
+				Exp:      exp,
+				Fame:     fame,
+				Pet:      _pet,
+				Stats:    _stats,
+				Items:    _items,
+				Outfit:   outfit,
+				Backpack: hasBackpack,
 			})
 		}
 	}
-	//swap arrays for no downtime
+	//apply outfit count and transform map into array
 	newcache := []*Player{}
 	for _, p := range temp {
+		for _, c := range p.Characters {
+			c.OutfitCount = temp_outfits[strings.Join(base.Aitoa([]int{c.Outfit.Skin, c.Outfit.Accessory, c.Outfit.Clothing}), ",")]
+		}
 		newcache = append(newcache, p)
 	}
+	//swap arrays for no downtime
 	m.Cache.Players = newcache
 	m.Cache.PlayerNames = names
 	m.Cache.Outfits = temp_outfits

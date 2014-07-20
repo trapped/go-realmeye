@@ -49,15 +49,15 @@ func (b *Bogus) FindPlayer(name string) (*Player, error) {
 			"and bogus stats.",
 		},
 		Pets: pets,
-		Characters: []Character{
-			Character{
+		Characters: []*Character{
+			&Character{
 				Class:      782,
 				Level:      20,
 				Fame:       1523,
 				Exp:        20000,
 				Rank:       133,
 				Pet:        Pet{},
-				Items:      make(map[int]Item, 0),
+				Items:      []int{},
 				LastSeen:   LastSeen{},
 				MaxedStats: 3,
 				Stats:      []int{},

@@ -77,34 +77,47 @@ func GuildRankString(num int) string {
 func ClassString(num int) string {
 	switch num {
 	case 768:
-		return "Rogue"
+		return "rogue"
 	case 775:
-		return "Archer"
+		return "archer"
 	case 782:
-		return "Wizard"
+		return "wizard"
 	case 784:
-		return "Priest"
+		return "priest"
 	case 797:
-		return "Warrior"
+		return "warrior"
 	case 798:
-		return "Knight"
+		return "knight"
+	case 799:
+		return "paladin"
 	case 800:
-		return "Assassin"
+		return "assassin"
 	case 801:
-		return "Necromancer"
+		return "necromancer"
 	case 802:
-		return "Huntress"
+		return "huntress"
 	case 803:
-		return "Mystic"
+		return "mystic"
 	case 804:
-		return "Trickster"
+		return "trickster"
 	case 805:
-		return "Sorcerer"
+		return "sorcerer"
 	case 806:
-		return "Ninja"
+		return "ninja"
 	default:
 		return ""
 	}
+}
+
+func Capitalize(s string) (r string) {
+	if len(s) > 0 {
+		r = strings.ToUpper(string(s[0]))
+		if len(s) > 1 {
+			r += s[1:]
+		}
+		return r
+	}
+	return ""
 }
 
 func Plural(s string) string {
@@ -326,6 +339,7 @@ func (p *Page) Template(file string) *template.Template {
 		"famegoals":       FameGoals,
 		"join":            join,
 		"aitoa":           Aitoa,
+		"capitalize":      Capitalize,
 	}).ParseFiles(
 		filepath.Join(cwd, "./base/index.gom"),
 		filepath.Join(cwd, "./"+file),

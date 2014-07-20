@@ -6,10 +6,6 @@ type LastSeen struct {
 	Class  string
 }
 
-type Item struct {
-	Type int
-}
-
 type Pet struct {
 	Type int
 }
@@ -34,7 +30,7 @@ type Character struct {
 	Exp         int
 	Rank        int
 	Pet         Pet
-	Items       map[int]Item
+	Items       []int
 	LastSeen    LastSeen
 	MaxedStats  int
 	Stats       []int
@@ -45,7 +41,7 @@ type Character struct {
 
 type Player struct {
 	Name            string
-	Characters      []Character
+	Characters      []*Character
 	Pets            []*Pet
 	Fame            int
 	FameRank        int
