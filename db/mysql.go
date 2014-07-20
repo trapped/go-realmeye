@@ -90,8 +90,7 @@ func (m *MySQL) cache_players() {
 		panic(err)
 	}
 	for rows.Next() {
-		members := ""
-		name := ""
+		members, name := "", ""
 		err := rows.Scan(&name, &members)
 		if err != nil {
 			panic(err)
@@ -117,10 +116,7 @@ func (m *MySQL) cache_players() {
 		panic(err)
 	}
 	for rows.Next() {
-		id := -1
-		class := -1
-		bestlevel := 0
-		bestfame := 0
+		id, class, bestlevel, bestfame := -1, -1, 0, 0
 		err := rows.Scan(&id, &class, &bestlevel, &bestfame)
 		if err != nil {
 			panic(err)
@@ -128,13 +124,14 @@ func (m *MySQL) cache_players() {
 		if temp[id] == nil {
 			fmt.Printf("[DBCACHE] Cannot assign class stats to account #%v (not in 'accounts')\n", id)
 		} else {
-			temp[id].ClassQuests = make(map[int]ClassQuest)
+			if temp[id].ClassQuests == nil {
+				temp[id].ClassQuests = make(map[int]ClassQuest)
+			}
 			c := ClassQuest{
 				BestLevel: bestlevel,
 				BestFame:  bestfame,
 			}
 			temp[id].ClassQuests[class] = c
-			fmt.Printf("[DBCACHE] Best fame/level for class %v for %v: %v/%v\n", base.Capitalize(base.ClassString(class)), temp[id].Name, temp[id].ClassQuests[class].BestFame, temp[id].ClassQuests[class].BestLevel)
 		}
 	}
 	//account stats
@@ -156,22 +153,24 @@ func (m *MySQL) cache_players() {
 		}
 	}
 	//characters
-	rows, err = m.Connection.Query("SELECT accId, charType, level, exp, fame, items, stats, tex1, tex2, pet, hasBackpack, skin FROM characters")
+	rows, err = m.Connection.Query("SELECT accId, dead, charType, level, exp, fame, items, stats, tex1, tex2, pet, hasBackpack, skin FROM characters")
 	if err != nil {
 		panic(err)
 	}
 	for rows.Next() {
 		accId, charType, level, exp, fame, tex1, tex2, pet, skin := -1, -1, -1, -1, -1, -1, -1, -1, -1
 		items, stats := "", ""
-		hasBackpack := false
-		err := rows.Scan(&accId, &charType, &level, &exp, &fame, &items, &stats, &tex1, &tex2, &pet, &hasBackpack, &skin)
+		dead, hasBackpack := false, false
+		err := rows.Scan(&accId, &dead, &charType, &level, &exp, &fame, &items, &stats, &tex1, &tex2, &pet, &hasBackpack, &skin)
 		if err != nil {
 			panic(err)
 		}
 		if temp[accId] == nil {
-			fmt.Printf("[DBCACHE] Cannot assign account stats to account #%v (not in 'accounts')\n", accId)
+			fmt.Printf("[DBCACHE] Cannot assign character stats to account #%v (not in 'accounts')\n", accId)
 		} else {
-
+			if dead {
+				continue
+			}
 			_pet := Pet{
 				Type: pet,
 			}

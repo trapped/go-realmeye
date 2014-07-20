@@ -132,7 +132,7 @@
                 {{end}}
               </td>
               <td>
-                <a id="i{{$i}}BX840M" class="character" href="/top-characters-with-outfit/{{$char.Class}}/{{$char.Outfit.Skin}}/{{$char.Outfit.Clothing}}/{{$char.Outfit.Accessory}}" style="background-position: -210px -462px" data-class="{{$char.Class}}" data-skin="{{$char.Outfit.Skin}}" data-dye1="{{$char.Outfit.Dye1}}" data-dye2="{{$char.Outfit.Dye2}}" data-accessory-dye-id="{{$char.Outfit.Accessory}}" data-clothing-dye-id="{{$char.Outfit.Clothing}}" data-count="{{$char.OutfitCount}}"></a>
+                <a id="i{{$i}}BX840M" class="character" href="/top-characters-with-outfit/{{$char.Class}}/{{$char.Outfit.Skin}}/{{$char.Outfit.Clothing}}/{{$char.Outfit.Accessory}}" data-class="{{$char.Class}}" data-skin="{{$char.Outfit.Skin}}" data-dye1="{{$char.Outfit.Dye1}}" data-dye2="{{$char.Outfit.Dye2}}" data-accessory-dye-id="{{$char.Outfit.Accessory}}" data-clothing-dye-id="{{$char.Outfit.Clothing}}" data-count="{{$char.OutfitCount}}"></a>
               </td>
               <td>{{$char.Class | classstring | capitalize}}</td>
               <td>{{$char.Level}}</td>
@@ -147,6 +147,9 @@
                 <span class="item" data-item="{{index $char.Items 1}}"></span>
                 <span class="item" data-item="{{index $char.Items 2}}"></span>
                 <span class="item" data-item="{{index $char.Items 3}}"></span>
+                {{if $char.Backpack}}
+                <span class="item" data-item="3180"></span>
+                {{end}}
               </td>
               <td>
                 <span class="player-stats" data-stats="[{{join (aitoa $char.Stats) ","}}]" data-bonuses="[0,0,0,0,0,0,0,0]" data-class="{{$char.Class}}" data-level="{{$char.Level}}">{{$char.MaxedStats}}/8</span>
