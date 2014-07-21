@@ -176,16 +176,16 @@ func (m *MySQL) cache_players() {
 	}
 
 	//characters
-	rows, err = m.Connection.Query("SELECT accId, dead, lastSeen, charType, level, exp, fame, items, stats, tex1, tex2, pet, hasBackpack, skin FROM characters")
+	rows, err = m.Connection.Query("SELECT accId, dead, lastSeen, charType, level, exp, fame, items, stats, tex1, tex2, petId, hasBackpack, skin FROM characters")
 	if err != nil {
 		panic(err)
 	}
 	for rows.Next() {
-		accId, charType, level, exp, fame, tex1, tex2, pet, skin := -1, -1, -1, -1, -1, -1, -1, -1, -1
+		accId, charType, level, exp, fame, tex1, tex2, petId, skin := -1, -1, -1, -1, -1, -1, -1, 0, -1
 		items, stats, lastSeen := "", "", ""
 		dead, hasBackpack := false, false
 
-		err := rows.Scan(&accId, &dead, &lastSeen, &charType, &level, &exp, &fame, &items, &stats, &tex1, &tex2, &pet, &hasBackpack, &skin)
+		err := rows.Scan(&accId, &dead, &lastSeen, &charType, &level, &exp, &fame, &items, &stats, &tex1, &tex2, &petId, &hasBackpack, &skin)
 		if err != nil {
 			panic(err)
 		}
@@ -195,10 +195,6 @@ func (m *MySQL) cache_players() {
 		} else {
 			if dead {
 				continue
-			}
-
-			_pet := Pet{
-				Type: pet,
 			}
 
 			_lastSeen := LastSeen{
@@ -222,13 +218,39 @@ func (m *MySQL) cache_players() {
 				Level:    level,
 				Exp:      exp,
 				Fame:     fame,
-				Pet:      _pet,
+				Pet:      petId,
 				Stats:    _stats,
 				Items:    _items,
 				Outfit:   outfit,
 				Backpack: hasBackpack,
 				LastSeen: _lastSeen,
 			})
+		}
+	}
+
+	//pets
+	rows, err = m.Connection.Query("SELECT accId, petId, objType FROM pets")
+	if err != nil {
+		panic(err)
+	}
+	for rows.Next() {
+		accId, petId, objType := -1, -1, -1
+
+		err := rows.Scan(&accId, &petId, &objType)
+		if err != nil {
+			panic(err)
+		}
+
+		if temp[accId] == nil {
+			fmt.Printf("[DBCACHE] Cannot assign pet stats to account #%v (not in 'accounts')\n", accId)
+		} else {
+			if temp[accId].Pets == nil {
+				temp[accId].Pets = make(map[int]Pet)
+			}
+			temp[accId].Pets[petId] = Pet{
+				Id:   petId,
+				Type: objType,
+			}
 		}
 	}
 

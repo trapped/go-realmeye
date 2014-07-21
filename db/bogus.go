@@ -26,7 +26,11 @@ func (b *Bogus) FindPlayer(name string) (*Player, error) {
 		}
 		return &p, errors.New("Player not found")
 	}
-	pets := []*Pet{}
+	pets := make(map[int]Pet)
+	pets[1] = Pet{
+		Id:   1,
+		Type: 6000,
+	}
 	p := Player{
 		Name:        name,
 		Fame:        767,
@@ -56,7 +60,7 @@ func (b *Bogus) FindPlayer(name string) (*Player, error) {
 				Fame:       1523,
 				Exp:        20000,
 				Rank:       133,
-				Pet:        Pet{},
+				Pet:        1,
 				Items:      []int{},
 				LastSeen:   LastSeen{},
 				MaxedStats: 3,

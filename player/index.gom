@@ -133,8 +133,8 @@
             {{range $i, $char := .Specific.Characters}}
             <tr>
               <td>
-                {{if $char.Pet.Type}}
-                <span class="pet" data-item="{{$char.Pet.Type}}"></span>
+                {{if (index $.Specific.Pets $char.Pet).Type}}
+                <span class="pet" data-item="{{(index $.Specific.Pets $char.Pet).Type}}"></span>
                 {{end}}
               </td>
               <td>

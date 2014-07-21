@@ -11,6 +11,7 @@ type LastSeen struct {
 }
 
 type Pet struct {
+	Id   int
 	Type int
 }
 
@@ -33,7 +34,7 @@ type Character struct {
 	Fame        int
 	Exp         int
 	Rank        int
-	Pet         Pet
+	Pet         int
 	Items       []int
 	LastSeen    LastSeen
 	MaxedStats  int
@@ -46,7 +47,7 @@ type Character struct {
 type Player struct {
 	Name            string
 	Characters      []*Character
-	Pets            []*Pet
+	Pets            map[int]Pet
 	Fame            int
 	FameRank        int
 	Exp             int
