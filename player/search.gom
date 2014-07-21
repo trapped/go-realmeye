@@ -15,7 +15,7 @@
               {{template "search-player"}}
             </div>
           </div>
-        <div class="span2"></div>
+        </div>
       </div>
     </div>
   </body>

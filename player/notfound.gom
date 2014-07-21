@@ -27,7 +27,6 @@
           {{define "span-length"}}8{{end}}
           {{template "search-player"}}
         </div>
-      <div class="span2"></div>
     </div>
   </div>
 </body>

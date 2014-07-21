@@ -6,6 +6,7 @@ import (
 	"fmt"
 	_ "github.com/Go-SQL-Driver/MySQL"
 	"github.com/trapped/realmeye/base"
+	"html/template"
 	"sort"
 	"strconv"
 	"strings"
@@ -83,7 +84,7 @@ func (m *MySQL) cache_players() {
 	names := []string{}
 	for rows.Next() {
 		id := -1
-		p := Player{}
+		p := Player{Id: id}
 
 		err := rows.Scan(&id, &p.Name, &p.GuildRank, &p.Created)
 		if err != nil {
@@ -264,8 +265,46 @@ func (m *MySQL) cache_players() {
 		}
 		for _, c := range p.Characters {
 			c.OutfitCount = temp_outfits[strings.Join(base.Aitoa([]int{c.Outfit.Skin, c.Outfit.Accessory, c.Outfit.Clothing}), ",")]
+			p.Fame += c.Fame
+			p.Exp += c.Exp
+		}
+		for _, cq := range p.ClassQuests {
+			p.Stars += base.FameGoals(cq.BestFame)
 		}
 		newcache = append(newcache, p)
+	}
+
+	//sort players and calculate ranks
+	if len(newcache) > 1 {
+		exp_cmp := func(i interface{}, j interface{}) bool {
+			return (i != nil && j != nil) && (i.(*Player).Exp >= j.(*Player).Exp)
+		}
+		fame_cmp := func(i interface{}, j interface{}) bool {
+			return (i != nil && j != nil) && (i.(*Player).Fame >= j.(*Player).Fame)
+		}
+		accfame_cmp := func(i interface{}, j interface{}) bool {
+			return (i != nil && j != nil) && (i.(*Player).AccountFame >= j.(*Player).AccountFame)
+		}
+		converted := make([]interface{}, len(newcache))
+		for _, elem := range newcache {
+			converted = append(converted, interface{}(elem))
+		}
+		sorted_accfame, sorted_fame, sorted_exp := base.MergeSort(converted, accfame_cmp), base.MergeSort(converted, fame_cmp), base.MergeSort(converted, exp_cmp)
+		for i, p := range sorted_accfame {
+			if p != nil {
+				p.(*Player).AccountFameRank = i + 1
+			}
+		}
+		for i, p := range sorted_fame {
+			if p != nil {
+				p.(*Player).FameRank = i + 1
+			}
+		}
+		for i, p := range sorted_exp {
+			if p != nil {
+				p.(*Player).ExpRank = i + 1
+			}
+		}
 	}
 
 	//swap arrays for no downtime
@@ -276,6 +315,18 @@ func (m *MySQL) cache_players() {
 	m.Cache.Initialized = true
 
 	fmt.Printf("[DBCACHE] Cached %v players\n", len(newcache))
+}
+
+func (m *MySQL) RecentChanges() []RecentChange {
+	return []RecentChange{
+		RecentChange{
+			Date: "21 July 2014",
+			Changes: []template.HTML{
+				template.HTML(`Now showing stats from <a href="http://c453.pw">c453.pw</a>.`),
+				template.HTML(`Updated player profiles with fame/experience ranks.`),
+			},
+		},
+	}
 }
 
 func (m *MySQL) FindPlayer(name string) (*Player, error) {

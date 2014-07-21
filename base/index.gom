@@ -21,7 +21,7 @@
     <script src="/js/underscore-min.js"></script>
     <script src="/js/sheet.js"></script>
     <script src="/js/characters.js"></script>
-    <title>{{.Title}}</title>
+    <title>{{if .Title}}{{.Title}} | {{end}}RealmEye</title>
     <meta name="keywords" content="{{.Keywords}}">
     <meta name="description" content="{{.Description}}">
     <link rel="canonical" href="{{.Location}}">

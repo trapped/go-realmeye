@@ -39,7 +39,7 @@
               <tr>
                 <td>Account fame</td>
                 <td>
-                  <span class="numeric">{{.Specific.AccountFame}}</span>{{if gt .Specific.AccountFame 500}} ({{.Specific.AccountFameRank}}<sup>{{.Specific.AccountFameRank | ordinal}}</sup>){{end}}
+                  <span class="numeric">{{.Specific.AccountFame}}</span>{{if .Specific.AccountFameRank}} ({{.Specific.AccountFameRank}}<sup>{{.Specific.AccountFameRank | ordinal}}</sup>){{end}}
                 </td>
               </tr>
               {{if .Specific.Guild}}
@@ -174,7 +174,6 @@
         </table>
         {{end}}
       </div>
-      <div class="span2"></div>
     </div>
     <script type="text/javascript">
       addAnchorsInDescription("player-description", null);

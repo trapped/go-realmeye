@@ -50,7 +50,7 @@ func StarString(num int) string {
 		return "orange"
 	case num >= 56 && num <= 69:
 		return "yellow"
-	case num == 70:
+	case num >= 70:
 		return "white"
 	default:
 		return ""
@@ -329,6 +329,36 @@ func Similars(needle string, haystack []string, max int, casesens bool) (r []str
 	return r
 }
 
+func Merge(l, r []interface{}, less func(interface{}, interface{}) bool) []interface{} {
+	ret := make([]interface{}, 0, len(l)+len(r))
+	for len(l) > 0 || len(r) > 0 {
+		if len(l) == 0 {
+			return append(ret, r...)
+		}
+		if len(r) == 0 {
+			return append(ret, l...)
+		}
+		if less(l[0], r[0]) {
+			ret = append(ret, l[0])
+			l = l[1:]
+		} else {
+			ret = append(ret, r[0])
+			r = r[1:]
+		}
+	}
+	return ret
+}
+
+func MergeSort(s []interface{}, less func(interface{}, interface{}) bool) []interface{} {
+	if len(s) <= 1 {
+		return s
+	}
+	n := len(s) / 2
+	l := MergeSort(s[:n], less)
+	r := MergeSort(s[n:], less)
+	return Merge(l, r, less)
+}
+
 func (p *Page) Template(file string) *template.Template {
 	cwd, _ := os.Getwd()
 	tem := template.New(filepath.Base(file))
@@ -359,7 +389,7 @@ func (p *Page) Template(file string) *template.Template {
 
 func NotFound(w http.ResponseWriter, req *http.Request) {
 	b := Page{
-		Title:    "Not found | RealmEye",
+		Title:    "Not found",
 		Location: req.URL.String(),
 	}
 

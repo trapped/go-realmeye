@@ -45,6 +45,7 @@ type Character struct {
 }
 
 type Player struct {
+	Id              int
 	Name            string
 	Characters      []*Character
 	Pets            map[int]Pet
