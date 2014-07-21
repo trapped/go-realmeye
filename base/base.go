@@ -160,7 +160,7 @@ func HumanTime(t string) string {
 		panic(err)
 	}
 
-	datetime := time.Date(year, time.Month(month), day, hour, minute, second, 0, time.UTC)
+	datetime := time.Date(year, time.Month(month), day, hour, minute, second, 0, time.Local)
 
 	return humanize.Time(datetime)
 }
@@ -224,6 +224,15 @@ func join(a []string, s string) (result string) {
 		result += a[i]
 		if i < len(a)-1 {
 			result += s
+		}
+	}
+	return result
+}
+
+func striplowercase(a string) (result string) {
+	for _, r := range a {
+		if unicode.IsUpper(r) {
+			result += string(r)
 		}
 	}
 	return result
@@ -340,6 +349,7 @@ func (p *Page) Template(file string) *template.Template {
 		"join":            join,
 		"aitoa":           Aitoa,
 		"capitalize":      Capitalize,
+		"striplowercase":  striplowercase,
 	}).ParseFiles(
 		filepath.Join(cwd, "./base/index.gom"),
 		filepath.Join(cwd, "./"+file),

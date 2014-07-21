@@ -1,5 +1,9 @@
 package db
 
+import (
+	"time"
+)
+
 type LastSeen struct {
 	Time   string
 	Server string
@@ -58,4 +62,28 @@ type Player struct {
 	Description     []string
 	Similar         []string
 	ClassQuests     map[int]ClassQuest
+}
+
+func (p *Player) Len() int {
+	return len(p.Characters)
+}
+
+func (p *Player) Swap(i, j int) {
+	p.Characters[i], p.Characters[j] = p.Characters[j], p.Characters[i]
+}
+
+func (p *Player) Less(i, j int) bool {
+	if p.Characters[i].LastSeen.Time == "" && p.Characters[j].LastSeen.Time != "" {
+		return false
+	} else if p.Characters[i].LastSeen.Time != "" && p.Characters[j].LastSeen.Time == "" {
+		return true
+	} else if p.Characters[i].LastSeen.Time == "" && p.Characters[j].LastSeen.Time == "" {
+		return true
+	} else {
+
+		t, _ := time.Parse("2006-01-02 15:04:05", p.Characters[i].LastSeen.Time)
+		_t, _ := time.Parse("2006-01-02 15:04:05", p.Characters[j].LastSeen.Time)
+
+		return t.After(_t)
+	}
 }

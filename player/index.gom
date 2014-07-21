@@ -64,7 +64,13 @@
               <tr>
                 <td>Last seen</td>
                 <td>
-                  <span class="timeago" title="{{.Specific.LastSeen.Time}}">{{.Specific.LastSeen.Time | humantime}}</span> at {{.Specific.LastSeen.Server}} as {{.Specific.LastSeen.Class}}
+                  <span class="timeago" title="{{join (split .Specific.LastSeen.Time " ") "T"}}Z">never</span>
+                  {{if .Specific.LastSeen.Server}}
+                  at {{.Specific.LastSeen.Server}}
+                  {{end}}
+                  {{if .Specific.LastSeen.Class}}
+                  as {{.Specific.LastSeen.Class}}
+                  {{end}}
                 </td>
               </tr>
               {{end}}
@@ -154,11 +160,13 @@
               <td>
                 <span class="player-stats" data-stats="[{{join (aitoa $char.Stats) ","}}]" data-bonuses="[0,0,0,0,0,0,0,0]" data-class="{{$char.Class}}" data-level="{{$char.Level}}">{{$char.MaxedStats}}/8</span>
               </td>
+              {{if $char.LastSeen.Time}}
               <td>
-                <span class="timeago" title="2014-07-13T20:37:27Z">2014-07-13 20:37:27</span>
+                <span class="timeago" title="{{join (split $char.LastSeen.Time " ") "T"}}Z">never</span>
               </td>
+              {{end}}
               <td>
-                <abbr title="EUSouthWest">EUSW</abbr>
+                <abbr title="{{if $char.LastSeen.Server}}{{$char.LastSeen.Server}}{{else}}???{{end}}">{{if $char.LastSeen.Server}}{{$char.LastSeen.Server | striplowercase}}{{else}}???{{end}}</abbr>
               </td>
             </tr>
             {{end}}

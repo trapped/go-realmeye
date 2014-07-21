@@ -6,6 +6,7 @@ import (
 	"fmt"
 	_ "github.com/Go-SQL-Driver/MySQL"
 	"github.com/trapped/realmeye/base"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -13,12 +14,6 @@ import (
 
 //updates done through the web interface must both update the data in the cache AND queue
 //a db update
-type Cache struct {
-	Initialized bool
-	Players     []*Player
-	PlayerNames []string
-	Outfits     map[string]int
-}
 
 type MySQL struct {
 	Host       string
@@ -66,8 +61,20 @@ func (m *MySQL) Close() {
 
 func (m *MySQL) cache_players() {
 	fmt.Println("[DBCACHE] Caching players...")
+
+	//prevent/catch crashes
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("[DBCACHE] Unable to finish caching; recovered from/crashed in", r)
+			m.Cache.Initialized = false
+			m.Cache = Cache{}
+		}
+	}()
+
+	//temporary storage
 	temp := make(map[int]*Player)
 	temp_outfits := make(map[string]int)
+
 	//accounts
 	rows, err := m.Connection.Query("SELECT id, name, guildRank, regTime FROM accounts")
 	if err != nil {
@@ -77,13 +84,16 @@ func (m *MySQL) cache_players() {
 	for rows.Next() {
 		id := -1
 		p := Player{}
+
 		err := rows.Scan(&id, &p.Name, &p.GuildRank, &p.Created)
 		if err != nil {
 			panic(err)
 		}
+
 		temp[id] = &p
 		names = append(names, p.Name)
 	}
+
 	//guilds
 	rows, err = m.Connection.Query("SELECT name, members FROM guilds")
 	if err != nil {
@@ -91,17 +101,21 @@ func (m *MySQL) cache_players() {
 	}
 	for rows.Next() {
 		members, name := "", ""
+
 		err := rows.Scan(&name, &members)
 		if err != nil {
 			panic(err)
 		}
+
 		for _, member := range strings.Split(members, ",") {
 			_member := strings.TrimSpace(member)
 			if len(_member) > 0 {
 				__member, err := strconv.Atoi(_member)
+
 				if err != nil {
 					panic(err)
 				}
+
 				if temp[__member] == nil {
 					fmt.Printf("[DBCACHE] Cannot assign guild membership to account #%v (not in 'accounts')\n", __member)
 				} else {
@@ -110,6 +124,7 @@ func (m *MySQL) cache_players() {
 			}
 		}
 	}
+
 	//class quests
 	rows, err = m.Connection.Query("SELECT accId, objType, bestLv, bestFame FROM classstats")
 	if err != nil {
@@ -117,23 +132,28 @@ func (m *MySQL) cache_players() {
 	}
 	for rows.Next() {
 		id, class, bestlevel, bestfame := -1, -1, 0, 0
+
 		err := rows.Scan(&id, &class, &bestlevel, &bestfame)
 		if err != nil {
 			panic(err)
 		}
+
 		if temp[id] == nil {
 			fmt.Printf("[DBCACHE] Cannot assign class stats to account #%v (not in 'accounts')\n", id)
 		} else {
 			if temp[id].ClassQuests == nil {
 				temp[id].ClassQuests = make(map[int]ClassQuest)
 			}
+
 			c := ClassQuest{
 				BestLevel: bestlevel,
 				BestFame:  bestfame,
 			}
+
 			temp[id].ClassQuests[class] = c
 		}
 	}
+
 	//account stats
 	rows, err = m.Connection.Query("SELECT accId, fame FROM stats")
 	if err != nil {
@@ -142,47 +162,61 @@ func (m *MySQL) cache_players() {
 	for rows.Next() {
 		id := -1
 		accountfame := 0
+
 		err := rows.Scan(&id, &accountfame)
 		if err != nil {
 			panic(err)
 		}
+
 		if temp[id] == nil {
 			fmt.Printf("[DBCACHE] Cannot assign account stats to account #%v (not in 'accounts')\n", id)
 		} else {
 			temp[id].AccountFame = accountfame
 		}
 	}
+
 	//characters
-	rows, err = m.Connection.Query("SELECT accId, dead, charType, level, exp, fame, items, stats, tex1, tex2, pet, hasBackpack, skin FROM characters")
+	rows, err = m.Connection.Query("SELECT accId, dead, lastSeen, charType, level, exp, fame, items, stats, tex1, tex2, pet, hasBackpack, skin FROM characters")
 	if err != nil {
 		panic(err)
 	}
 	for rows.Next() {
 		accId, charType, level, exp, fame, tex1, tex2, pet, skin := -1, -1, -1, -1, -1, -1, -1, -1, -1
-		items, stats := "", ""
+		items, stats, lastSeen := "", "", ""
 		dead, hasBackpack := false, false
-		err := rows.Scan(&accId, &dead, &charType, &level, &exp, &fame, &items, &stats, &tex1, &tex2, &pet, &hasBackpack, &skin)
+
+		err := rows.Scan(&accId, &dead, &lastSeen, &charType, &level, &exp, &fame, &items, &stats, &tex1, &tex2, &pet, &hasBackpack, &skin)
 		if err != nil {
 			panic(err)
 		}
+
 		if temp[accId] == nil {
 			fmt.Printf("[DBCACHE] Cannot assign character stats to account #%v (not in 'accounts')\n", accId)
 		} else {
 			if dead {
 				continue
 			}
+
 			_pet := Pet{
 				Type: pet,
 			}
+
+			_lastSeen := LastSeen{
+				Time: lastSeen,
+			}
+
 			outfit := Outfit{
 				Skin:      skin,
 				Accessory: tex2,
 				Clothing:  tex1,
 			}
+
 			_outfit := strings.Join(base.Aitoa([]int{outfit.Skin, outfit.Accessory, outfit.Clothing}), ",")
+
 			temp_outfits[_outfit]++
 			_stats := base.Aatoi(stats, ", ")
 			_items := base.Aatoi(items, ", ")
+
 			temp[accId].Characters = append(temp[accId].Characters, &Character{
 				Class:    charType,
 				Level:    level,
@@ -193,22 +227,32 @@ func (m *MySQL) cache_players() {
 				Items:    _items,
 				Outfit:   outfit,
 				Backpack: hasBackpack,
+				LastSeen: _lastSeen,
 			})
 		}
 	}
+
 	//apply outfit count and transform map into array
 	newcache := []*Player{}
 	for _, p := range temp {
+		sort.Sort(p)
+		if len(p.Characters) > 0 {
+			p.LastSeen = p.Characters[0].LastSeen
+			p.LastSeen.Class = base.Capitalize(base.ClassString(p.Characters[0].Class))
+		}
 		for _, c := range p.Characters {
 			c.OutfitCount = temp_outfits[strings.Join(base.Aitoa([]int{c.Outfit.Skin, c.Outfit.Accessory, c.Outfit.Clothing}), ",")]
 		}
 		newcache = append(newcache, p)
 	}
+
 	//swap arrays for no downtime
 	m.Cache.Players = newcache
 	m.Cache.PlayerNames = names
 	m.Cache.Outfits = temp_outfits
+
 	m.Cache.Initialized = true
+
 	fmt.Printf("[DBCACHE] Cached %v players\n", len(newcache))
 }
 
