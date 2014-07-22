@@ -1,31 +1,25 @@
 {{define "head"}}
-  <head>
-    <meta http-equiv="content-type" content="text/html;charset=UTF-8">
-    <meta http-equiv="x-ua-compatible" content="IE=9">
-    <meta name="msapplication-config" content="none">
-    <meta name="viewport" content="width=1040">
-    <link rel="shortcut icon" href="/img/favicon.ico">
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/tablesorter.css" rel="stylesheet">
-    <link href="/css/realmeye.css" rel="stylesheet">
-    <link href="/css/characters.css" rel="stylesheet">
-    <link href="/css/select2.css" rel="stylesheet">
-    <link href="/css/messages.css" rel="stylesheet">
-    <script src="/js/jquery-1.8.2.min.js"></script>
-    <script src="/js/bs.min.js"></script>
-    <script src="/js/jquery.timeago.js"></script>
-    <script src="/js/jquery.timeago.en-short.js"></script>
-    <script src="/js/definition.js"></script>
-    <script src="/js/jquery.tablesorter.js"></script>
-    <script src="/js/realmeye.js"></script>
-    <script src="/js/underscore-min.js"></script>
-    <script src="/js/sheet.js"></script>
-    <script src="/js/characters.js"></script>
-    <title>{{if .Title}}{{.Title}} | {{end}}RealmEye</title>
-    <meta name="keywords" content="{{.Keywords}}">
-    <meta name="description" content="{{.Description}}">
-    <link rel="canonical" href="{{.Location}}">
-  </head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+  <meta http-equiv="x-ua-compatible" content="IE=9">
+  <meta name="msapplication-config" content="none">
+  <meta name="viewport" content="width=1040">
+  <link rel="shortcut icon" href="/img/favicon.ico">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/tablesorter.css" rel="stylesheet">
+  <link href="/css/realmeye.css" rel="stylesheet">
+  <link href="/css/characters.css" rel="stylesheet">
+  <link href="/css/select2.css" rel="stylesheet">
+  <link href="/css/messages.css" rel="stylesheet">
+  <script src="/js/jquery-1.8.2.min.js"></script>
+  <script src="/js/bs.min.js"></script>
+  <script src="/js/jquery.timeago.js"></script>
+  <script src="/js/jquery.timeago.en-short.js"></script>
+  <script src="/js/definition.js"></script>
+  <script src="/js/jquery.tablesorter.js"></script>
+  <script src="/js/realmeye.js"></script>
+  <script src="/js/underscore-min.js"></script>
+  <script src="/js/sheet.js"></script>
+  <script src="/js/characters.js"></script>
 {{end}}
 
 {{define "noscript"}}

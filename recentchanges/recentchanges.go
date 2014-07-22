@@ -11,8 +11,11 @@ func Serve(w http.ResponseWriter, req *http.Request) {
 		RecentChanges []db.RecentChange
 	}
 	b := base.Page{
-		Title:    "Recent changes",
-		Specific: db.Default.RecentChanges(),
+		Title:       "Recent changes",
+		Location:    "/recent-changes",
+		Description: "Recent changes and improvements of RealmEye.com",
+		Keywords:    "recent changes",
+		Specific:    db.Default.RecentChanges(),
 	}
 
 	tem := b.Template("recentchanges/index.gom")

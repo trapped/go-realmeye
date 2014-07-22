@@ -1,33 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-{{template "head"}}
-<body>
-  {{template "header"}}
-  <div class="container">
-    {{template "noscript"}}
-    <div class="row">
-      <div class="span12">
-        <h2>Sorry, but we either:</h2>
-        <ul class="player-not-found">
-          <li>haven&apos;t seen &quot;{{.Specific.Name}}&quot; yet,</li>
-          <li>
-            or &quot;{{.Specific.Name}}&quot; has a
-            <a href="/mreyeball#privateprofile">private profile</a>
-          </li>
-          <li>or &quot;{{.Specific.Name}}&quot; has changed his name.</li>
-        </ul>
-        {{if len .Specific.Similar}}
-        Maybe you are looking for one of the following players:
-        {{range $index, $name := .Specific.Similar}}
-        <span class="suggestion">
-          <a href="/player/{{$name}}">{{$name}}</a></span>{{if ne $index (sub (len $.Specific.Similar) 1)}},{{end}}
-        {{end}}
-        {{end}}
-        <div class="row player-search">
-          {{define "span-length"}}8{{end}}
-          {{template "search-player"}}
+  <head>
+    {{template "head"}}
+    <meta name="keywords" content="{{.Keywords}}">
+    <meta name="description" content="{{.Description}}">
+    <link rel="canonical" href="{{.Location}}">
+    <title>{{if .Title}}{{.Title}} | {{end}}RealmEye</title>
+  </head>
+  <body>
+    {{template "header"}}
+    <div class="container">
+      {{template "noscript"}}
+      <div class="row">
+        <div class="span12">
+          <h2>Sorry, but we either:</h2>
+          <ul class="player-not-found">
+            <li>haven&apos;t seen &quot;{{.Specific.Name}}&quot; yet,</li>
+            <li>
+              or &quot;{{.Specific.Name}}&quot; has a
+              <a href="/mreyeball#privateprofile">private profile</a>
+            </li>
+            <li>or &quot;{{.Specific.Name}}&quot; has changed his name.</li>
+          </ul>
+          {{if len .Specific.Similar}}
+          Maybe you are looking for one of the following players:
+          {{range $index, $name := .Specific.Similar}}
+          <span class="suggestion">
+            <a href="/player/{{$name}}">{{$name}}</a></span>{{if ne $index (sub (len $.Specific.Similar) 1)}},{{end}}
+          {{end}}
+          {{end}}
+          <div class="row player-search">
+            {{define "span-length"}}8{{end}}
+            {{template "search-player"}}
+          </div>
         </div>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

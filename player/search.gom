@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-{{template "head"}}
+  <head>
+    {{template "head"}}
+    <meta name="keywords" content="{{.Keywords}}">
+    <meta name="description" content="{{.Description}}">
+    <link rel="canonical" href="{{.Location}}">
+    <title>{{if .Title}}{{.Title}} | {{end}}RealmEye</title>
+  </head>
 <body>
   {{template "header"}}
   <div class="container">

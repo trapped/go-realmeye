@@ -360,6 +360,7 @@ func MergeSort(s []interface{}, less func(interface{}, interface{}) bool) []inte
 }
 
 func (p *Page) Template(file string) *template.Template {
+	p.Keywords = "free online mmo rpg game, realm of the mad god, rotmg, statistics, stats, rankings, ranks, " + p.Keywords
 	cwd, _ := os.Getwd()
 	tem := template.New(filepath.Base(file))
 	tem = template.Must(tem.Funcs(template.FuncMap{

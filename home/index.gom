@@ -1,40 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-{{template "head"}}
-<body>
-  {{template "header"}}
-  <div class="container">
-    {{template "noscript"}}
-    <div class="row">
-      <div class="span12">
-        <div class="home row">
-          <div class="span12">
-            <img class="realm-eye-huge" src="/img/eye-big.png">
+  <head>
+    {{template "head"}}
+    <meta name="keywords" content="{{.Keywords}}">
+    <meta name="description" content="{{.Description}}">
+    <link rel="canonical" href="{{.Location}}">
+    <title>{{if .Title}}{{.Title}} | {{end}}RealmEye</title>
+  </head>
+  <body>
+    {{template "header"}}
+    <div class="container">
+      {{template "noscript"}}
+      <div class="row">
+        <div class="span12">
+          <div class="home row">
+            <div class="span12">
+              <img class="realm-eye-huge" src="/img/eye-big.png">
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="motto span12">We are {{.Specific.Watching | html}}watching you!</div>
-        </div>
-        <div class="row player-search">
-          {{define "span-length"}}4{{end}}
-          {{template "search-player"}}
-          {{template "search-guild"}}
-        </div>
-        {{if .Specific.RecentChanges}}
-        <div class="row  recent-changes-home" style="margin-top: 20px">
-          <div class="well">
-            <h5><a href="/recent-changes">Recent changes</a></h5>
-            {{range $i, $item := .Specific.RecentChanges}}
-            <h4>{{$item.Date}}</h4>
-            <ul>
-              {{range $ii, $iitem := $item.Changes}}
-              <li>{{$iitem}}</li>
+          <div class="row">
+            <div class="motto span12">We are {{.Specific.Watching | html}}watching you!</div>
+          </div>
+          <div class="row player-search">
+            {{define "span-length"}}4{{end}}
+            {{template "search-player"}}
+            {{template "search-guild"}}
+          </div>
+          {{if .Specific.RecentChanges}}
+          <div class="row  recent-changes-home" style="margin-top: 20px">
+            <div class="well">
+              <h5><a href="/recent-changes">Recent changes</a></h5>
+              {{range $i, $item := .Specific.RecentChanges}}
+              <h4>{{$item.Date}}</h4>
+              <ul>
+                {{range $ii, $iitem := $item.Changes}}
+                <li>{{$iitem}}</li>
+                {{end}}
+              </ul>
               {{end}}
-            </ul>
-            {{end}}
+            </div>
           </div>
+          {{end}}
         </div>
-        {{end}}
       </div>
     </div>
   </body>

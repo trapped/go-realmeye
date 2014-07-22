@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-{{template "head"}}
-<body>
-  {{template "header"}}
-  <div class="container">
-    {{template "noscript"}}
-    <div class="row">
-      <div class="span12">
-      {{range $i, $item := .Specific}}
-      <h4>{{$item.Date}}</h4>
-      <ul>
-        {{range $ii, $iitem := $item.Changes}}
-        <li>{{$iitem}}</li>
-        {{end}}
-      </ul>
-      {{end}}
+  <head>
+    {{template "head"}}
+    <meta name="keywords" content="{{.Keywords}}">
+    <meta name="description" content="{{.Description}}">
+    <link rel="canonical" href="{{.Location}}">
+    <title>{{if .Title}}{{.Title}} | {{end}}RealmEye</title>
+  </head>
+  <body>
+    {{template "header"}}
+    <div class="container">
+      {{template "noscript"}}
+      <div class="row">
+        <div class="span12">
+          {{range $i, $item := .Specific}}
+          <h4>{{$item.Date}}</h4>
+          <ul>
+            {{range $ii, $iitem := $item.Changes}}
+            <li>{{$iitem}}</li>
+            {{end}}
+          </ul>
+          {{end}}
+        </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

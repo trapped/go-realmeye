@@ -1,7 +1,6 @@
 package home
 
 import (
-	"fmt"
 	"github.com/trapped/realmeye/base"
 	"github.com/trapped/realmeye/db"
 	"net/http"
@@ -15,8 +14,11 @@ type home struct {
 }
 
 func Serve(w http.ResponseWriter, req *http.Request) {
-	fmt.Println(db.Default.RecentChanges())
 	b := base.Page{
+		Title:       "Home",
+		Location:    "/",
+		Description: "Rankings, statistics, in-game trading, player and guild profiles, and more for Realm of the Mad God - the free online MMO RPG game.",
+		Keywords:    "home",
 		Specific: home{
 			Watching:      Watching,
 			RecentChanges: db.Default.RecentChanges(),
