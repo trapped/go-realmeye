@@ -4,11 +4,14 @@ import (
 	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
 	"github.com/trapped/realmeye/base"
+	"github.com/trapped/realmeye/config"
 	"github.com/trapped/realmeye/db"
 	"github.com/trapped/realmeye/home"
 	"github.com/trapped/realmeye/player"
 	"github.com/trapped/realmeye/recentchanges"
 	"net/http"
+	"os"
+	"path/filepath"
 )
 
 func registerHandlers(m *mux.Router) {
@@ -29,7 +32,9 @@ func registerHandlers(m *mux.Router) {
 }
 
 func main() {
-	db.Default = &db.Bogus{}
+	cwd, _ := os.Getwd()
+	config.Load(filepath.Join(cwd, "./config.json"))
+	db.Default = config.DB
 	db.Default.Open()
 	defer db.Default.Close()
 

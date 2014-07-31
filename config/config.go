@@ -24,24 +24,24 @@ func Load(path string) {
 		panic(err)
 	}
 	c := config{}
-	err = json.Unmarshal(data, c)
+	err = json.Unmarshal(data, &c)
 	if err != nil {
 		panic(err)
 	}
 	switch c.Type {
 	case "mysql":
-		DB = db.MySQL{
+		DB = db.Source(&db.MySQL{
 			Host:     strings.Split(c.Host, ":")[0],
 			Port:     strings.Split(c.Host, ":")[1],
 			Database: c.Schema,
 			User:     c.User,
 			Password: c.Password,
-		}
+		})
 		break
 	case "bogus":
-		DB = db.Bogus{}
+		DB = db.Source(&db.Bogus{})
 		break
 	default:
-		panic()
+		panic(nil)
 	}
 }
