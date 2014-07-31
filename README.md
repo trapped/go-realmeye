@@ -5,6 +5,23 @@ All serverside code is copyrighted to me; all clientside code is copyrighted to 
 
 ---
 
+####Configuration
+
+Currently this only supports two types of database: a bogus/example one (for easy testing/debugging purposes) and a MySQL one which currently runs in a "private server DB"-compatibility mode with complete data caching (refreshing every minute; I've only implemented this at the moment as I don't want to run my own DB and plugging someone else's was the laziest choice).
+
+You can easily configure the DB settings in the config.json file:
+
+```json
+{
+	"Type": "mysql",
+	"Host": "localhost:3306",
+	"User": "realmeye",
+	"Password": "",
+	"Schema": "rotmg",
+	"Cached": true
+}
+```
+
 ####Status/todo
 
 - [x] Recent changes
