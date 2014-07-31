@@ -3,6 +3,7 @@ package db
 import (
 	"errors"
 	"github.com/trapped/realmeye/base"
+	"html/template"
 )
 
 type Bogus struct{}
@@ -11,6 +12,18 @@ func (b *Bogus) Open() {
 }
 
 func (b *Bogus) Close() {
+}
+
+func (b *Bogus) RecentChanges() []RecentChange {
+	return []RecentChange{
+		RecentChange{
+			Date: "31 July 2014",
+			Changes: []template.HTML{
+				"This is a bogus news item.",
+				"This is <b>another</b> bogus news item.",
+			},
+		},
+	}
 }
 
 func (b *Bogus) FindPlayer(name string) (*Player, error) {
