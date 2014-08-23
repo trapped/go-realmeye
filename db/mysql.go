@@ -7,6 +7,7 @@ import (
 	_ "github.com/Go-SQL-Driver/MySQL"
 	"github.com/trapped/realmeye/base"
 	"html/template"
+	"math"
 	"sort"
 	"strconv"
 	"strings"
@@ -276,6 +277,10 @@ func (m *MySQL) cache_players() {
 
 	//sort players and calculate ranks
 	if len(newcache) > 1 {
+		conv_sorted_accfame := []*Player{}
+		conv_sorted_fame := []*Player{}
+		conv_sorted_exp := []*Player{}
+
 		exp_cmp := func(i interface{}, j interface{}) bool {
 			return (i != nil && j != nil) && (i.(*Player).Exp >= j.(*Player).Exp)
 		}
@@ -289,22 +294,31 @@ func (m *MySQL) cache_players() {
 		for _, elem := range newcache {
 			converted = append(converted, interface{}(elem))
 		}
+
 		sorted_accfame, sorted_fame, sorted_exp := base.MergeSort(converted, accfame_cmp), base.MergeSort(converted, fame_cmp), base.MergeSort(converted, exp_cmp)
+
 		for i, p := range sorted_accfame {
 			if p != nil {
 				p.(*Player).AccountFameRank = i + 1
+				conv_sorted_accfame = append(conv_sorted_accfame, p.(*Player))
 			}
 		}
 		for i, p := range sorted_fame {
 			if p != nil {
 				p.(*Player).FameRank = i + 1
+				conv_sorted_fame = append(conv_sorted_fame, p.(*Player))
 			}
 		}
 		for i, p := range sorted_exp {
 			if p != nil {
 				p.(*Player).ExpRank = i + 1
+				conv_sorted_exp = append(conv_sorted_exp, p.(*Player))
 			}
 		}
+
+		m.Cache.PlayersByAccFame = conv_sorted_accfame
+		m.Cache.PlayersByFame = conv_sorted_fame
+		m.Cache.PlayersByExp = conv_sorted_exp
 	}
 
 	//swap arrays for no downtime
@@ -341,4 +355,25 @@ func (m *MySQL) FindPlayer(name string) (*Player, error) {
 		Similar: base.Similars(name, m.Cache.PlayerNames, 10, false),
 	}
 	return &p, errors.New("Player not found")
+}
+
+func (m *MySQL) SortPlayers(sorting string, offset int, num int) ([]*Player, error) {
+	if offset > len(m.Cache.Players) {
+		return []*Player{}, errors.New(fmt.Sprintf("invalid offset %d: only %d players", offset, num, len(m.Cache.Players)))
+	}
+	if num < 1 {
+		return []*Player{}, nil
+	}
+	cached := []*Player{}
+	switch sorting {
+	case SortFame:
+		cached = m.Cache.PlayersByFame
+	case SortAccFame:
+		cached = m.Cache.PlayersByAccFame
+	case SortExp:
+		cached = m.Cache.PlayersByExp
+	default:
+		return []*Player{}, errors.New("unknown sorting \"" + sorting + "\"")
+	}
+	return cached[int(math.Min(float64(len(cached)), float64(offset))):int(math.Min(float64(len(cached)), float64(offset+num)))], nil
 }

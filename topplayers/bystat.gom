@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{{template "head"}}
+		<meta name="keywords" content="{{.Keywords}}">
+    	<meta name="description" content="{{.Description}}">
+    	<link rel="canonical" href="{{.Location}}">
+    	<title>{{if .Title}}{{.Title}} | {{end}}RealmEye</title>
+	</head>
+	<body>
+    {{template "header"}}
+	<div class="container">
+		{{template "noscript"}}
+		<div class="row">
+			<div class="span12">
+				<h1>Top Players by {{.Specific.Sorting | capitalize}}</h1>
+				<p>This is a list of the top {{.Specific.Number}} players by {{.Specific.Sorting | capitalize}} seen in the past two weeks in RotMG.</p>
+				<p>&nbsp;</p>
+				<div class="pagination pagination-centered">
+					<ul>
+					{{if .Specific.Pages}}
+					{{range $i, $p := .Specific.Pages}}
+						<li{{if eq (sub $p 99) $.Specific.Offset}} class="active"{{end}}>
+							<a href="/top-players-by-fame{{if ne $i 0}}/{{index $.Specific.Pages (sub $i 1) | add 1}}{{end}}">{{if eq $i 0}}1{{else}}{{add 1 (index $.Specific.Pages (sub $i 1))}}{{end}} - {{$p}}</a>
+						</li>
+					{{end}}
+					{{end}}
+					</ul>
+				</div>
+				<table id="players-table" class="table table-striped tablesorter">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Name</th>
+							<th>Guild</th>
+							{{if eq .Specific.Sorting "account-fame"}}
+							<th><abbr title="Account Fame">AF</abbr></th>
+							{{else}}
+							<th>Fame</th>
+							<th>Exp</th>
+							{{end}}
+							<th><abbr title="Rank">R</abbr></th>
+							<th><abbr title="Chars">C</abbr></th>
+							{{if or (eq .Specific.Sorting "fame") (eq .Specific.Sorting "exp")}}
+							<th><abbr title="Avg. Fame / Char">AF/C</abbr></th>
+							<th><abbr title="Avg. Exp / Char">AE/C</abbr></th>
+							{{end}}
+							<th>Last seen</th>
+							<th><abbr title="Server">Srv.</abbr></th>
+						</tr>
+					</thead>
+					<tbody>
+						{{range $i, $player := .Specific.Players}}
+						<tr>
+							<td>{{add $i $.Specific.Offset}}.</td>
+							<td>
+								<div class="star-container">
+									<a href="/player/{{$player.Name}}">{{$player.Name}}</a>
+									<div class="star star-{{starstring $player.Stars}}"></div>
+								</div>
+							</td>
+							<td><a href="/guild/{{$player.Guild}}">{{$player.Guild}}</a></td>
+							{{if eq $.Specific.Sorting "account-fame"}}
+							<td>{{$player.AccountFame}}</td>
+							{{else}}
+							<td><a href="/fame-history-of-player/{{$player.Name}}">{{$player.Fame}}</a></td>
+							<td>{{$player.Exp}}</td>
+							{{end}}
+							<td>{{$player.Stars}}</td>
+							<td>{{len $player.Characters}}</td>
+							{{if or (eq $.Specific.Sorting "fame") (eq $.Specific.Sorting "exp")}}
+							<td>{{if $player.Characters}}{{div $player.Fame (len $player.Characters)}}{{else}}0{{end}}</td>
+							<td>{{if $player.Characters}}{{div $player.Exp (len $player.Characters)}}{{else}}0{{end}}</td>
+							{{end}}
+							<td><span class="timeago" title="{{$player.LastSeen.Time}}"></span></td>
+							<td>{{if $player.LastSeen.Server}}{{$player.LastSeen.Server}}{{else}}???{{end}}</td>
+						</tr>
+						{{end}}
+					</tbody>
+				</table>
+				<div class="pagination pagination-centered">
+					<ul>
+		            {{if .Specific.Pages}}
+					{{range $i, $p := .Specific.Pages}}
+						<li{{if eq (sub $p 99) $.Specific.Offset}} class="active"{{end}}>
+							<a href="/top-players-by-fame{{if ne $i 0}}/{{index $.Specific.Pages (sub $i 1) | add 1}}{{end}}">{{if eq $i 0}}1{{else}}{{add 1 (index $.Specific.Pages (sub $i 1))}}{{end}} - {{$p}}</a>
+						</li>
+					{{end}}
+					{{end}}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			makeSortable("players-table", {
+				0:  { "sorter": "digit" },
+				1:  { "sorter": "text" },
+				2:  { "sorter": "text" },
+				3:  { "sorter": "digit" },
+				4:  { "sorter": "digit" },
+				5:  { "sorter": "digit" },
+				6:  { "sorter": "digit" },
+				7:  { "sorter": "digit" },
+				8:  { "sorter": "digit" },
+				9:  { "sorter": "text" },
+				10: { "sorter": "text" }});
+			renderNumeric("players-table", 1);
+			renderNumeric("players-table", 4);
+			renderNumeric("players-table", 5);
+			renderNumeric("players-table", 6);
+			renderNumeric("players-table", 7);
+			renderNumeric("players-table", 8);
+			renderNumeric("players-table", 9);
+		</script>
+	</div>
+</body>
+</html>

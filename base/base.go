@@ -111,11 +111,13 @@ func ClassString(num int) string {
 
 func Capitalize(s string) (r string) {
 	if len(s) > 0 {
-		r = strings.ToUpper(string(s[0]))
-		if len(s) > 1 {
-			r += s[1:]
+		ss := strings.Split(strings.Replace(s, "-", " ", -1), " ")
+		for i := range ss {
+			if len(ss[i]) > 0 {
+				ss[i] = string(unicode.ToUpper(rune(ss[i][0]))) + ss[i][1:]
+			}
 		}
-		return r
+		return strings.Join(ss, " ")
 	}
 	return ""
 }
@@ -198,6 +200,14 @@ func add(a int, b int) int {
 
 func sub(a int, b int) int {
 	return a - b
+}
+
+func div(a int, b int) int {
+	return a / b
+}
+
+func mul(a int, b int) int {
+	return a * b
 }
 
 func Aitoa(a []int) (result []string) {
@@ -374,6 +384,8 @@ func (p *Page) Template(file string) *template.Template {
 		"hasext":          HasExt,
 		"add":             add,
 		"sub":             sub,
+		"div":             div,
+		"mul":             mul,
 		"plural":          Plural,
 		"edist":           EDist,
 		"famegoals":       FameGoals,

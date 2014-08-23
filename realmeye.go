@@ -9,6 +9,7 @@ import (
 	"github.com/trapped/realmeye/home"
 	"github.com/trapped/realmeye/player"
 	"github.com/trapped/realmeye/recentchanges"
+	"github.com/trapped/realmeye/topplayers"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -29,6 +30,9 @@ func registerHandlers(m *mux.Router) {
 	//m.HandleFunc("/top-pets-of-guild/{name}", topPetsOf)
 	//Recent changes
 	m.HandleFunc("/recent-changes", recentchanges.Serve)
+	//Leaderboards
+	m.HandleFunc("/top-players-by-{sorting}", topplayers.Serve)
+	m.HandleFunc("/top-players-by-{sorting}/{offset}", topplayers.Serve)
 }
 
 func main() {

@@ -5,10 +5,13 @@ import (
 )
 
 type Cache struct {
-	Initialized bool
-	Players     []*Player
-	PlayerNames []string
-	Outfits     map[string]int
+	Initialized      bool
+	Players          []*Player
+	PlayersByFame    []*Player
+	PlayersByAccFame []*Player
+	PlayersByExp     []*Player
+	PlayerNames      []string
+	Outfits          map[string]int
 }
 
 type RecentChange struct {
@@ -16,10 +19,17 @@ type RecentChange struct {
 	Changes []template.HTML
 }
 
+const (
+	SortFame    string = "fame"
+	SortAccFame string = "account-fame"
+	SortExp     string = "exp"
+)
+
 type Source interface {
 	Open()
 	Close()
 	FindPlayer(name string) (*Player, error)
+	SortPlayers(sorting string, offset int, num int) ([]*Player, error)
 	RecentChanges() []RecentChange
 }
 

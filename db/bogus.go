@@ -84,3 +84,7 @@ func (b *Bogus) FindPlayer(name string) (*Player, error) {
 	}
 	return &p, nil
 }
+
+func (b *Bogus) SortPlayers(sorting string, offset int, num int) ([]*Player, error) {
+	return []*Player{}, nil
+}

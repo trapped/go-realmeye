@@ -7,9 +7,6 @@ import (
 )
 
 func Serve(w http.ResponseWriter, req *http.Request) {
-	type rc struct {
-		RecentChanges []db.RecentChange
-	}
 	b := base.Page{
 		Title:       "Recent changes",
 		Location:    "/recent-changes",

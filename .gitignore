@@ -2,3 +2,6 @@
 realmeye
 gin-bin
 *.sublime*
+
+#Configuration files
+config.json
