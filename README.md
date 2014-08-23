@@ -31,7 +31,8 @@ You can easily configure the DB settings in the config.json file:
 - [ ] Characters' last seen server
 - [ ] Player pets
 - [ ] Player graveyard
-- [ ] Top players (by fame/etc.)
+- [x] Top players (by fame, experience, account fame)
+- [ ] Top players (by graveyard, with no guild)
 - [ ] Guilds
 - [ ] Top guilds (by fame/etc.)
 - [ ] Wiki
