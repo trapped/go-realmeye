@@ -24,18 +24,24 @@ type Page struct {
 }
 
 func Ordinal(num int) string {
-	s := strconv.Itoa(num)
-	d := s[len(s)-1]
-	switch d {
-	case 1:
-		return "st"
-	case 2:
-		return "nd"
-	case 3:
-		return "rd"
-	default:
-		return "th"
-	}
+    switch (num % 100) {
+        case 11:
+        case 12:
+        case 13:
+            return "th";
+        default:
+            break;
+    }
+    switch (num % 10) {
+        case 1:
+            return "st";
+        case 2:
+            return "nd";
+        case 3:
+            return "rd";
+        default:
+            return "th";
+    }
 }
 
 func StarString(num int) string {
